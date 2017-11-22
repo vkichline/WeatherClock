@@ -1,0 +1,21 @@
+﻿.weather-forecast-container {
+    display: inline-block;
+    width: 9em;
+    font-family: sans-serif;
+}
+
+.weather-forecast {
+    display: inline-block;
+    font-size: 50%;
+    text-align: center;
+}
+
+.weather-forecast .temperature {
+    display: inline-block;
+    float: left;
+}
+
+.weather-forecast .icon {
+    display: inline-block;
+    float: right;
+}

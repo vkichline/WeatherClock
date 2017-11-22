@@ -1,0 +1,63 @@
+﻿body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  color: white;
+  font-size: 72pt; }
+
+.clock-face-container {
+  display: inline-block;
+  width: 9em; }
+
+.clock-face {
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: sans-serif;
+  float: right; }
+
+.clock-face tr {
+  margin: 0;
+  padding: 0; }
+
+.clock-face td {
+  text-align: center;
+  margin: 0;
+  padding: 0; }
+
+.clock-face .time {
+  font-size: 300%;
+  line-height: 1em; }
+
+.clock-face .seconds {
+  width: 1.5em;
+  font-size: 100%;
+  vertical-align: bottom;
+  text-align: center;
+  line-height: 1em; }
+
+.clock-face .ampm {
+  font-size: 90%;
+  vertical-align: top; }
+
+.clock-face .date {
+  font-size: 25%;
+  text-align: center; }
+
+.weather-forecast-container {
+  display: inline-block;
+  width: 9em;
+  font-family: sans-serif; }
+
+.weather-forecast {
+  display: inline-block;
+  font-size: 50%;
+  text-align: center; }
+
+.weather-forecast .temperature {
+  display: inline-block;
+  float: left; }
+
+.weather-forecast .icon {
+  display: inline-block;
+  float: right; }
+

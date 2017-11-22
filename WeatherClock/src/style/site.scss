@@ -1,0 +1,12 @@
+﻿@import "vars";
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: $site-background;
+    color: $site-foreground;
+    font-size: $clock-fontsize;
+}
+
+@import "clock-face";
+@import "weather-forecast";

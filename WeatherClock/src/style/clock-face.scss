@@ -1,0 +1,46 @@
+﻿.clock-face-container {
+    display: inline-block;
+    width: 9em;
+}
+
+.clock-face {
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-family: sans-serif;
+    float: right;
+}
+
+.clock-face tr {
+    margin: 0;
+    padding: 0;
+}
+
+.clock-face td {
+    text-align: center;
+    border: $dev-borders;
+    margin: 0;
+    padding: 0;
+}
+
+.clock-face .time {
+    font-size: 300%;
+    line-height: 1em;
+}
+
+.clock-face .seconds {
+    width: 1.5em;
+    font-size: 100%;
+    vertical-align: bottom;
+    text-align: center;
+    line-height: 1em;
+}
+
+.clock-face .ampm {
+    font-size: 90%;
+    vertical-align: top;
+}
+
+.clock-face .date {
+    font-size: 25%;
+    text-align: center;
+}
