@@ -7,12 +7,40 @@ body {
     font-size: $clock-fontsize;
 }
 
+div, td {
+    border: $dev-borders;
+}
+
 .app-container {
     background-color: $site-background;
     margin: 0;
     padding: 0;
     width: 1600px;
     height: 900px;
+}
+
+.app-container .column1 {
+    border: $dev-borders;
+    float: left;
+    width: 25%;
+    height: 900px;
+    overflow: hidden;
+}
+
+.app-container .column2 {
+    border: $dev-borders;
+    float: left;
+    width: 50%;
+    height: 900px;
+    overflow: hidden;
+}
+
+.app-container .column3 {
+    border: $dev-borders;
+    float: left;
+    width: 25%;
+    height: 900px;
+    overflow: hidden;
 }
 
 @import "clock-face";

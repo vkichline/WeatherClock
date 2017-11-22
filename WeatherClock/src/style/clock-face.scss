@@ -1,13 +1,13 @@
 ﻿.clock-face-container {
-    display: inline-block;
-    width: 9em;
+    display: block;
+    text-align: center;
 }
 
 .clock-face {
+    margin: 0 auto;
     border-collapse: collapse;
     table-layout: fixed;
     font-family: sans-serif;
-    float: right;
 }
 
 .clock-face tr {
@@ -17,7 +17,6 @@
 
 .clock-face td {
     text-align: center;
-    border: $dev-borders;
     margin: 0;
     padding: 0;
 }

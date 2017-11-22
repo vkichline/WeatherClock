@@ -261,7 +261,7 @@ var WeatherForecast = (function (_React$Component2) {
                     React.createElement(
                         "div",
                         { className: "icon" },
-                        React.createElement("img", { className: iconClass })
+                        React.createElement("img", { className: iconClass, src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=" })
                     )
                 )
             );
@@ -291,8 +291,14 @@ var WeatherClock = (function (_React$Component3) {
             return React.createElement(
                 "div",
                 { className: "app-container" },
-                React.createElement(ClockFace, null),
-                React.createElement(WeatherForecast, null)
+                React.createElement("div", { className: "column1" }),
+                React.createElement(
+                    "div",
+                    { className: "column2" },
+                    React.createElement(ClockFace, null),
+                    React.createElement(WeatherForecast, null)
+                ),
+                React.createElement("div", { className: "column3" })
             );
         }
     }]);

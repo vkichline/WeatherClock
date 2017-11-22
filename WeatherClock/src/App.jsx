@@ -181,7 +181,7 @@ class WeatherForecast extends React.Component {
                             this.state.channel.item.condition.temp + "°" : '?'}
                     </div>
                     <div className="icon">
-                        <img className={iconClass} />
+                        <img className={iconClass} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=" />
                     </div>
                 </div>
             </div>
@@ -204,8 +204,12 @@ class WeatherClock extends React.Component {
     render() {
         return (
             <div className="app-container">
-                <ClockFace />
-                <WeatherForecast />
+                <div className="column1" />
+                <div className="column2" >
+                    <ClockFace />
+                    <WeatherForecast />
+                </div>
+                <div className="column3" />
             </div>
         );
     }
