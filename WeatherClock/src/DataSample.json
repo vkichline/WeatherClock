@@ -1,0 +1,147 @@
+﻿{
+  "query": {
+    "count": 1,
+    "created": "2017-11-22T19:21:15Z",
+    "lang": "en-US",
+    "results": {
+      "channel": {
+        "units": {
+          "distance": "mi",
+          "pressure": "in",
+          "speed": "mph",
+          "temperature": "F"
+        },
+        "title": "Yahoo! Weather - Seattle, WA, US",
+        "link": "http://us.rd.yahoo.com/dailynews/rss/weather/Country__Country/*https://weather.yahoo.com/country/state/city-2490383/",
+        "description": "Yahoo! Weather for Seattle, WA, US",
+        "language": "en-us",
+        "lastBuildDate": "Wed, 22 Nov 2017 11:21 AM PST",
+        "ttl": "60",
+        "location": {
+          "city": "Seattle",
+          "country": "United States",
+          "region": " WA"
+        },
+        "wind": {
+          "chill": "55",
+          "direction": "140",
+          "speed": "11"
+        },
+        "atmosphere": {
+          "humidity": "95",
+          "pressure": "1013.0",
+          "rising": "0",
+          "visibility": "10.1"
+        },
+        "astronomy": {
+          "sunrise": "7:25 am",
+          "sunset": "4:26 pm"
+        },
+        "image": {
+          "title": "Yahoo! Weather",
+          "width": "142",
+          "height": "18",
+          "link": "http://weather.yahoo.com",
+          "url": "http://l.yimg.com/a/i/brand/purplelogo//uh/us/news-wea.gif"
+        },
+        "item": {
+          "title": "Conditions for Seattle, WA, US at 09:00 AM PST",
+          "lat": "47.603561",
+          "long": "-122.329437",
+          "link": "http://us.rd.yahoo.com/dailynews/rss/weather/Country__Country/*https://weather.yahoo.com/country/state/city-2490383/",
+          "pubDate": "Wed, 22 Nov 2017 09:00 AM PST",
+          "condition": {
+            "code": "26",
+            "date": "Wed, 22 Nov 2017 09:00 AM PST",
+            "temp": "56",
+            "text": "Cloudy"
+          },
+          "forecast": [
+            {
+              "code": "12",
+              "date": "22 Nov 2017",
+              "day": "Wed",
+              "high": "61",
+              "low": "55",
+              "text": "Rain"
+            },
+            {
+              "code": "12",
+              "date": "23 Nov 2017",
+              "day": "Thu",
+              "high": "58",
+              "low": "49",
+              "text": "Rain"
+            },
+            {
+              "code": "28",
+              "date": "24 Nov 2017",
+              "day": "Fri",
+              "high": "51",
+              "low": "47",
+              "text": "Mostly Cloudy"
+            },
+            {
+              "code": "11",
+              "date": "25 Nov 2017",
+              "day": "Sat",
+              "high": "51",
+              "low": "45",
+              "text": "Showers"
+            },
+            {
+              "code": "11",
+              "date": "26 Nov 2017",
+              "day": "Sun",
+              "high": "53",
+              "low": "46",
+              "text": "Showers"
+            },
+            {
+              "code": "39",
+              "date": "27 Nov 2017",
+              "day": "Mon",
+              "high": "50",
+              "low": "44",
+              "text": "Scattered Showers"
+            },
+            {
+              "code": "28",
+              "date": "28 Nov 2017",
+              "day": "Tue",
+              "high": "50",
+              "low": "44",
+              "text": "Mostly Cloudy"
+            },
+            {
+              "code": "28",
+              "date": "29 Nov 2017",
+              "day": "Wed",
+              "high": "51",
+              "low": "43",
+              "text": "Mostly Cloudy"
+            },
+            {
+              "code": "28",
+              "date": "30 Nov 2017",
+              "day": "Thu",
+              "high": "47",
+              "low": "42",
+              "text": "Mostly Cloudy"
+            },
+            {
+              "code": "28",
+              "date": "01 Dec 2017",
+              "day": "Fri",
+              "high": "49",
+              "low": "41",
+              "text": "Mostly Cloudy"
+            }
+          ],
+          "description": "<![CDATA[<img src=\"http://l.yimg.com/a/i/us/we/52/26.gif\"/>\n<BR />\n<b>Current Conditions:</b>\n<BR />Cloudy\n<BR />\n<BR />\n<b>Forecast:</b>\n<BR /> Wed - Rain. High: 61Low: 55\n<BR /> Thu - Rain. High: 58Low: 49\n<BR /> Fri - Mostly Cloudy. High: 51Low: 47\n<BR /> Sat - Showers. High: 51Low: 45\n<BR /> Sun - Showers. High: 53Low: 46\n<BR />\n<BR />\n<a href=\"http://us.rd.yahoo.com/dailynews/rss/weather/Country__Country/*https://weather.yahoo.com/country/state/city-2490383/\">Full Forecast at Yahoo! Weather</a>\n<BR />\n<BR />\n<BR />\n]]>",
+          "guid": { "isPermaLink": "false" }
+        }
+      }
+    }
+  }
+}

@@ -1,9 +1,15 @@
 ﻿body {
   margin: 0;
   padding: 0;
-  background-color: black;
   color: white;
   font-size: 72pt; }
+
+.app-container {
+  background-color: black;
+  margin: 0;
+  padding: 0;
+  width: 1600px;
+  height: 900px; }
 
 .clock-face-container {
   display: inline-block;
@@ -48,16 +54,54 @@
   width: 9em;
   font-family: sans-serif; }
 
+.weather-forecast-container div {
+  float: right; }
+
 .weather-forecast {
   display: inline-block;
-  font-size: 50%;
-  text-align: center; }
+  align-content: center; }
 
 .weather-forecast .temperature {
   display: inline-block;
-  float: left; }
+  text-align: center;
+  width: 2.4em;
+  float: left;
+  font-size: 200%; }
 
 .weather-forecast .icon {
   display: inline-block;
+  width: 4em;
   float: right; }
+
+.weather-forecast .icon-image {
+  display: block;
+  margin: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 2em;
+  width: 3em; }
+
+.clear-day {
+  background-image: url("/images/clear.png"); }
+
+.rain {
+  background-image: url("/images/rain.png"); }
+
+.thunderstorms {
+  background-image: url("/images/thunderstorm.png"); }
+
+.snow {
+  background-image: url("/images/snow.png"); }
+
+.fog {
+  background-image: url("/images/fog.png"); }
+
+.windy {
+  background-image: url("/images/wind.png"); }
+
+.cloudy {
+  background-image: url("/images/cloudy.png"); }
+
+.partly-cloudy-day {
+  background-image: url("/images/partly-cloudy.png"); }
 

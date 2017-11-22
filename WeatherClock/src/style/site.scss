@@ -3,9 +3,16 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: $site-background;
     color: $site-foreground;
     font-size: $clock-fontsize;
+}
+
+.app-container {
+    background-color: $site-background;
+    margin: 0;
+    padding: 0;
+    width: 1600px;
+    height: 900px;
 }
 
 @import "clock-face";

@@ -10,6 +10,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\images\clear.png" />
+    <None Include="wwwroot\images\cloudy-scattered-showers.png" />
+    <None Include="wwwroot\images\cloudy.png" />
+    <None Include="wwwroot\images\cloudy_s_sunny.png" />
+    <None Include="wwwroot\images\fog.png" />
+    <None Include="wwwroot\images\ic_add_white_24px.svg" />
+    <None Include="wwwroot\images\ic_refresh_white_24px.svg" />
+    <None Include="wwwroot\images\partly-cloudy.png" />
+    <None Include="wwwroot\images\rain.png" />
+    <None Include="wwwroot\images\scattered-showers.png" />
+    <None Include="wwwroot\images\sleet.png" />
+    <None Include="wwwroot\images\snow.png" />
+    <None Include="wwwroot\images\thunderstorm.png" />
+    <None Include="wwwroot\images\wind.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BuildWebCompiler" Version="1.11.326" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
   </ItemGroup>
