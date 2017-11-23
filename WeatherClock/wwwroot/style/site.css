@@ -14,19 +14,16 @@
 .app-container .column1 {
   float: left;
   width: 20%;
-  height: 900px;
   overflow: hidden; }
 
 .app-container .column2 {
   float: left;
   width: 60%;
-  height: 900px;
   overflow: hidden; }
 
 .app-container .column3 {
   float: left;
-  width: 20%;
-  height: 900px;
+  width: 19.5%;
   overflow: hidden; }
 
 .clock-face-container {
@@ -143,5 +140,22 @@
   width: 5em; }
 
 .weather-details .value {
+  color: deepskyblue; }
+
+.time-details {
+  display: block;
+  padding: 1em 0;
+  text-align: left;
+  font-family: serif;
+  font-size: 25%;
+  color: darkorange; }
+
+.time-details div {
+  padding: 0;
+  margin: 0 0 .75em .5em; }
+
+.time-details .title {
+  display: inline-block;
+  width: 6.5em;
   color: deepskyblue; }
 

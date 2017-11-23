@@ -23,7 +23,6 @@ div, td {
     border: $dev-borders;
     float: left;
     width: 20%;
-    height: 900px;
     overflow: hidden;
 }
 
@@ -31,18 +30,17 @@ div, td {
     border: $dev-borders;
     float: left;
     width: 60%;
-    height: 900px;
     overflow: hidden;
 }
 
 .app-container .column3 {
     border: $dev-borders;
     float: left;
-    width: 20%;
-    height: 900px;
+    width: 19.5%;
     overflow: hidden;
 }
 
 @import "clock-face";
 @import "weather-forecast";
 @import "weather-details";
+@import "time-details";

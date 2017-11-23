@@ -52,12 +52,202 @@
         );
     }
 }
-
 ClockFace.defaultProps = {
     days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     month_abbrev: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 };
+
+
+class TimeDetails extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { time: new Date() };
+    }
+
+    tick() {
+        this.setState(prevState => ({
+            time: new Date()
+        }));
+    }
+
+    componentDidMount() {
+        this.interval = setInterval(() => this.tick(), 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+    formatTime(date, asUtc) {
+        let hours = asUtc ? date.getUTCHours() : date.getHours();
+        let minutes = asUtc ? date.getUTCMinutes() : date.getMinutes();
+        let seconds = asUtc ? date.getUTCSeconds() : date.getSeconds();
+        let ispm = hours > 11;
+        hours = ispm ? hours - 12 : hours;
+        if (hours == 0) hours = 12;
+        return hours.toString() + ":" +
+            (minutes < 10 ? "0" + minutes : minutes.toString()) + ":" +
+            (seconds < 10 ? "0" + seconds : seconds.toString()) + " " +
+            (ispm ? "PM" : "AM");
+    }
+
+    formatSiderialTime(st) {
+        let minute = (st % 1) * 60;
+        let hour = Math.trunc(st);
+        let second = (minute % 1) * 60;
+        minute = Math.trunc(minute);
+        second = Math.trunc(second);
+        return (hour.toString() + ":" +
+            (minute < 10 ? "0" + minute : minute.toString()) + ":" +
+                (second < 10 ? "0" + second : second.toString()));
+    }
+
+    // From https://www.iiap.res.in/personnel/reks/software/javascript/calclst.php
+    calcLST(date) {
+        let tzone = -1.0 * date.getTimezoneOffset() / 60.0;
+        let lsign = -1;
+        let lst = 0.0;
+        let olong = Math.abs(tzone * 15.0);
+        if (olong > 180) olong = olong - 180;
+        olong = Math.abs(olong);
+        let hr = date.getHours() + date.getMinutes() / 60.0 + date.getSeconds() / 3600.0;
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let year = date.getFullYear();
+        let ut = this.modDay(hr - tzone);
+        let dno = this.getDayno2K(year, month, day, hr);
+        let ws = this.mod2pi(282.9404 + 4.70935 * Math.pow(10.0, -5) * dno);
+        let ms = this.mod2pi(356.0470 + 0.9856002585 * dno);
+        let meanlong = this.mod2pi(ms + ws);
+        let gmst0 = (meanlong) / 15.0;
+        lst = this.modDay(gmst0 + ut + lsign * olong / 15.0) + 11.0 + 56.0 / 60.0;
+        if (lst >= 24.0) lst = lst - 24.0;
+        return lst;
+    }
+    getDayno2K(yy, mm, dd, hr) {
+        let jd = this.julianDay(yy, mm, dd, hr);
+        return parseFloat(jd) - 2451543.5;
+    }
+    modDay(val) {
+        let b = val / 24.0;
+        let a = 24.0 * (b - this.absFloor(b));
+        if (a < 0) a = a + 24.0;
+        return a;
+    }
+    absFloor(val) {
+        if (val >= 0.0) return Math.floor(val);
+        else return Math.ceil(val);
+    }
+    mod2pi(angle) {
+        let b = angle / 360.0;
+        let a = 360.0 * (b - this.absFloor(b));
+        if (a < 0) a = 360.0 + a;
+        return a;
+    }
+    getDaysinMonth(mm, yy) {
+        mm = parseFloat(mm);
+        yy = parseFloat(yy);
+        let ndays = 31;
+        if ((mm == 4) || (mm == 6) || (mm == 9) || (mm == 11)) ndays = 30;
+        if (mm == 2) {
+            ndays = 28;
+            if ((yy % 4) == 0) ndays = 29;
+            if ((yy % 100) == 0) ndays = 28;
+            if ((yy % 400) == 0) ndays = 29;
+        }
+        return ndays;
+    }
+    julianDay(yy, mm, dd, hh) {
+        mm = parseFloat(mm);
+        yy = parseFloat(yy);
+        dd = parseFloat(dd);
+        hh = parseFloat(hh);
+        let extra = (100.0 * yy + mm) - 190002.5;
+        let jday = 367.0 * yy;
+        jday -= Math.floor(7.0 * (yy + Math.floor((mm + 9.0) / 12.0)) / 4.0);
+        jday += Math.floor(275.0 * mm / 9.0);
+        jday += dd;
+        jday += hh / 24.0;
+        jday += 1721013.5;
+        jday -= 0.5 * extra / Math.abs(extra);
+        jday += 0.5;
+        return jday;
+    }
+
+    // From http://indigotide.com/software/siderealsource.html
+    getGMST(now) {
+        let year = now.getUTCFullYear();	// get UTC from computer clock date & time (var now)
+        let month = now.getUTCMonth() + 1;
+        let day = now.getUTCDate();
+        let hour = now.getUTCHours();
+        let minute = now.getUTCMinutes();
+        let second = now.getUTCSeconds();
+
+        if (month == 1 || month == 2) {
+            year = year - 1;
+            month = month + 12;
+        }
+
+        let lc = Math.floor(year / 100);	//integer # days / leap century
+        let ly = 2 - lc + Math.floor(lc / 4);	//integer # days / leap year
+        let y = Math.floor(365.25 * year);	//integer # days / year
+        let m = Math.floor(30.6001 * (month + 1));	//integer # days / month
+
+        // now get julian days since J2000.0
+        let jd = ly + y + m - 730550.5 + day + (hour + minute / 60.0 + second / 3600.0) / 24.0;
+
+        // julian centuries since J2000.0
+        let jc = jd / 36525.0;
+
+        // Greenwich Mean Sidereal Time (GMST) in degrees
+        let GMST = 280.46061837 + 360.98564736629 * jd + 0.000387933 * jc * jc - jc * jc * jc / 38710000;
+
+        if (GMST > 0.0)	// circle goes round and round, adjust if < 0 or > 360 degrees
+        {
+            while (GMST > 360.0)
+                GMST -= 360.0;
+        }
+        else {
+            while (GMST < 0.0)
+                GMST += 360.0;
+        }
+        return GMST;	// in degrees
+    }
+
+    // From https://stackoverflow.com/questions/8619879/javascript-calculate-the-day-of-the-year-1-366
+    getDayOfYear(date) {
+        let start = new Date(date.getFullYear(), 0, 0);
+        let diff = (date - start) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000);
+        let oneDay = 1000 * 60 * 60 * 24;
+        return Math.floor(diff / oneDay);
+    }
+
+    getSecondOfYear(date) {
+        let start = new Date(date.getFullYear(), 0, 0);
+        let diff = (date - start) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60);
+        return Math.floor(diff / 1000);
+   }
+
+    render() {
+        let date = this.state.time;
+        let hour = 0.0 + date.getHours() + (date.getMinutes() / 60.0) + (date.getSeconds() / 3600.0);
+        let jday = this.julianDay(date.getFullYear(), date.getMonth(), date.getDate(), hour);
+        let st = this.calcLST(date);
+        return (
+            <div className="time-details">
+                <div><span className="title">UTC:</span><span className="value">{this.formatTime(date, true)}</span></div>
+                <div><span className="title">Julian Day:</span><span className="value">{jday.toFixed(4).toLocaleString('en')}</span></div>
+                <div><span className="title">Sidereal Time:</span><span className="value">{this.formatSiderialTime(st)}</span></div>
+                <div><span className="title">GMST:</span><span className="value">{this.getGMST(date).toFixed(4) + "° RA"}</span></div>
+                <div><span className="title">Time Zone:</span><span className="value">{date.getTimezoneOffset() / 60}</span></div>
+                <div><span className="title">Day of Year:</span><span className="value">{this.getDayOfYear(date)}</span></div>
+                <div><span className="title">Second:</span><span className="value">{this.getSecondOfYear(date).toLocaleString('en')}</span></div>
+                <div><span className="title"></span><span className="value"></span></div>
+            </div>
+        );
+    }
+}
 
 
 class WeatherForecast extends React.Component {
@@ -220,7 +410,9 @@ class WeatherClock extends React.Component {
     render() {
         return (
             <div className="app-container">
-                <div className="column1" />
+                <div className="column1">
+                    <TimeDetails />
+                </div>
                 <div className="column2" >
                     <ClockFace />
                     <WeatherForecast channel={this.state.channel} />

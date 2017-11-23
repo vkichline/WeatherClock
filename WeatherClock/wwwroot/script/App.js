@@ -113,8 +113,324 @@ ClockFace.defaultProps = {
     month_abbrev: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 };
 
-var WeatherForecast = (function (_React$Component2) {
-    _inherits(WeatherForecast, _React$Component2);
+var TimeDetails = (function (_React$Component2) {
+    _inherits(TimeDetails, _React$Component2);
+
+    function TimeDetails(props) {
+        _classCallCheck(this, TimeDetails);
+
+        _get(Object.getPrototypeOf(TimeDetails.prototype), "constructor", this).call(this, props);
+        this.state = { time: new Date() };
+    }
+
+    _createClass(TimeDetails, [{
+        key: "tick",
+        value: function tick() {
+            this.setState(function (prevState) {
+                return {
+                    time: new Date()
+                };
+            });
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            this.interval = setInterval(function () {
+                return _this2.tick();
+            }, 1000);
+        }
+    }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+            clearInterval(this.interval);
+        }
+    }, {
+        key: "formatTime",
+        value: function formatTime(date, asUtc) {
+            var hours = asUtc ? date.getUTCHours() : date.getHours();
+            var minutes = asUtc ? date.getUTCMinutes() : date.getMinutes();
+            var seconds = asUtc ? date.getUTCSeconds() : date.getSeconds();
+            var ispm = hours > 11;
+            hours = ispm ? hours - 12 : hours;
+            if (hours == 0) hours = 12;
+            return hours.toString() + ":" + (minutes < 10 ? "0" + minutes : minutes.toString()) + ":" + (seconds < 10 ? "0" + seconds : seconds.toString()) + " " + (ispm ? "PM" : "AM");
+        }
+    }, {
+        key: "formatSiderialTime",
+        value: function formatSiderialTime(st) {
+            var minute = st % 1 * 60;
+            var hour = Math.trunc(st);
+            var second = minute % 1 * 60;
+            minute = Math.trunc(minute);
+            second = Math.trunc(second);
+            return hour.toString() + ":" + (minute < 10 ? "0" + minute : minute.toString()) + ":" + (second < 10 ? "0" + second : second.toString());
+        }
+
+        // From https://www.iiap.res.in/personnel/reks/software/javascript/calclst.php
+    }, {
+        key: "calcLST",
+        value: function calcLST(date) {
+            var tzone = -1.0 * date.getTimezoneOffset() / 60.0;
+            var lsign = -1;
+            var lst = 0.0;
+            var olong = Math.abs(tzone * 15.0);
+            if (olong > 180) olong = olong - 180;
+            olong = Math.abs(olong);
+            var hr = date.getHours() + date.getMinutes() / 60.0 + date.getSeconds() / 3600.0;
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var year = date.getFullYear();
+            var ut = this.modDay(hr - tzone);
+            var dno = this.getDayno2K(year, month, day, hr);
+            var ws = this.mod2pi(282.9404 + 4.70935 * Math.pow(10.0, -5) * dno);
+            var ms = this.mod2pi(356.0470 + 0.9856002585 * dno);
+            var meanlong = this.mod2pi(ms + ws);
+            var gmst0 = meanlong / 15.0;
+            lst = this.modDay(gmst0 + ut + lsign * olong / 15.0) + 11.0 + 56.0 / 60.0;
+            if (lst >= 24.0) lst = lst - 24.0;
+            return lst;
+        }
+    }, {
+        key: "getDayno2K",
+        value: function getDayno2K(yy, mm, dd, hr) {
+            var jd = this.julianDay(yy, mm, dd, hr);
+            return parseFloat(jd) - 2451543.5;
+        }
+    }, {
+        key: "modDay",
+        value: function modDay(val) {
+            var b = val / 24.0;
+            var a = 24.0 * (b - this.absFloor(b));
+            if (a < 0) a = a + 24.0;
+            return a;
+        }
+    }, {
+        key: "absFloor",
+        value: function absFloor(val) {
+            if (val >= 0.0) return Math.floor(val);else return Math.ceil(val);
+        }
+    }, {
+        key: "mod2pi",
+        value: function mod2pi(angle) {
+            var b = angle / 360.0;
+            var a = 360.0 * (b - this.absFloor(b));
+            if (a < 0) a = 360.0 + a;
+            return a;
+        }
+    }, {
+        key: "getDaysinMonth",
+        value: function getDaysinMonth(mm, yy) {
+            mm = parseFloat(mm);
+            yy = parseFloat(yy);
+            var ndays = 31;
+            if (mm == 4 || mm == 6 || mm == 9 || mm == 11) ndays = 30;
+            if (mm == 2) {
+                ndays = 28;
+                if (yy % 4 == 0) ndays = 29;
+                if (yy % 100 == 0) ndays = 28;
+                if (yy % 400 == 0) ndays = 29;
+            }
+            return ndays;
+        }
+    }, {
+        key: "julianDay",
+        value: function julianDay(yy, mm, dd, hh) {
+            mm = parseFloat(mm);
+            yy = parseFloat(yy);
+            dd = parseFloat(dd);
+            hh = parseFloat(hh);
+            var extra = 100.0 * yy + mm - 190002.5;
+            var jday = 367.0 * yy;
+            jday -= Math.floor(7.0 * (yy + Math.floor((mm + 9.0) / 12.0)) / 4.0);
+            jday += Math.floor(275.0 * mm / 9.0);
+            jday += dd;
+            jday += hh / 24.0;
+            jday += 1721013.5;
+            jday -= 0.5 * extra / Math.abs(extra);
+            jday += 0.5;
+            return jday;
+        }
+
+        // From http://indigotide.com/software/siderealsource.html
+    }, {
+        key: "getGMST",
+        value: function getGMST(now) {
+            var year = now.getUTCFullYear(); // get UTC from computer clock date & time (var now)
+            var month = now.getUTCMonth() + 1;
+            var day = now.getUTCDate();
+            var hour = now.getUTCHours();
+            var minute = now.getUTCMinutes();
+            var second = now.getUTCSeconds();
+
+            if (month == 1 || month == 2) {
+                year = year - 1;
+                month = month + 12;
+            }
+
+            var lc = Math.floor(year / 100); //integer # days / leap century
+            var ly = 2 - lc + Math.floor(lc / 4); //integer # days / leap year
+            var y = Math.floor(365.25 * year); //integer # days / year
+            var m = Math.floor(30.6001 * (month + 1)); //integer # days / month
+
+            // now get julian days since J2000.0
+            var jd = ly + y + m - 730550.5 + day + (hour + minute / 60.0 + second / 3600.0) / 24.0;
+
+            // julian centuries since J2000.0
+            var jc = jd / 36525.0;
+
+            // Greenwich Mean Sidereal Time (GMST) in degrees
+            var GMST = 280.46061837 + 360.98564736629 * jd + 0.000387933 * jc * jc - jc * jc * jc / 38710000;
+
+            if (GMST > 0.0) // circle goes round and round, adjust if < 0 or > 360 degrees
+                {
+                    while (GMST > 360.0) GMST -= 360.0;
+                } else {
+                while (GMST < 0.0) GMST += 360.0;
+            }
+            return GMST; // in degrees
+        }
+
+        // From https://stackoverflow.com/questions/8619879/javascript-calculate-the-day-of-the-year-1-366
+    }, {
+        key: "getDayOfYear",
+        value: function getDayOfYear(date) {
+            var start = new Date(date.getFullYear(), 0, 0);
+            var diff = date - start + (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
+            var oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+    }, {
+        key: "getSecondOfYear",
+        value: function getSecondOfYear(date) {
+            var start = new Date(date.getFullYear(), 0, 0);
+            var diff = date - start + (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60;
+            return Math.floor(diff / 1000);
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var date = this.state.time;
+            var hour = 0.0 + date.getHours() + date.getMinutes() / 60.0 + date.getSeconds() / 3600.0;
+            var jday = this.julianDay(date.getFullYear(), date.getMonth(), date.getDate(), hour);
+            var st = this.calcLST(date);
+            return React.createElement(
+                "div",
+                { className: "time-details" },
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "UTC:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        this.formatTime(date, true)
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Julian Day:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        jday.toFixed(4).toLocaleString('en')
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Sidereal Time:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        this.formatSiderialTime(st)
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "GMST:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        this.getGMST(date).toFixed(4) + "° RA"
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Time Zone:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        date.getTimezoneOffset() / 60
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Day of Year:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        this.getDayOfYear(date)
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Second:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        this.getSecondOfYear(date).toLocaleString('en')
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement("span", { className: "title" }),
+                    React.createElement("span", { className: "value" })
+                )
+            );
+        }
+    }]);
+
+    return TimeDetails;
+})(React.Component);
+
+var WeatherForecast = (function (_React$Component3) {
+    _inherits(WeatherForecast, _React$Component3);
 
     function WeatherForecast() {
         _classCallCheck(this, WeatherForecast);
@@ -229,8 +545,8 @@ var WeatherForecast = (function (_React$Component2) {
 
 ;
 
-var WeatherDetails = (function (_React$Component3) {
-    _inherits(WeatherDetails, _React$Component3);
+var WeatherDetails = (function (_React$Component4) {
+    _inherits(WeatherDetails, _React$Component4);
 
     function WeatherDetails() {
         _classCallCheck(this, WeatherDetails);
@@ -415,8 +731,8 @@ var WeatherDetails = (function (_React$Component3) {
     return WeatherDetails;
 })(React.Component);
 
-var WeatherClock = (function (_React$Component4) {
-    _inherits(WeatherClock, _React$Component4);
+var WeatherClock = (function (_React$Component5) {
+    _inherits(WeatherClock, _React$Component5);
 
     function WeatherClock(props) {
         _classCallCheck(this, WeatherClock);
@@ -475,7 +791,11 @@ var WeatherClock = (function (_React$Component4) {
             return React.createElement(
                 "div",
                 { className: "app-container" },
-                React.createElement("div", { className: "column1" }),
+                React.createElement(
+                    "div",
+                    { className: "column1" },
+                    React.createElement(TimeDetails, null)
+                ),
                 React.createElement(
                     "div",
                     { className: "column2" },
