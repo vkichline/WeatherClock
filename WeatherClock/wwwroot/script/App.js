@@ -338,12 +338,12 @@ var TimeDetails = (function (_React$Component2) {
                     React.createElement(
                         "span",
                         { className: "title" },
-                        "Julian Day:"
+                        "Sidereal Time:"
                     ),
                     React.createElement(
                         "span",
                         { className: "value" },
-                        jday.toFixed(4).toLocaleString('en')
+                        this.formatSiderialTime(st)
                     )
                 ),
                 React.createElement(
@@ -352,12 +352,12 @@ var TimeDetails = (function (_React$Component2) {
                     React.createElement(
                         "span",
                         { className: "title" },
-                        "Sidereal Time:"
+                        "Julian Day:"
                     ),
                     React.createElement(
                         "span",
                         { className: "value" },
-                        this.formatSiderialTime(st)
+                        jday.toFixed(4).toLocaleString('en')
                     )
                 ),
                 React.createElement(
@@ -380,12 +380,12 @@ var TimeDetails = (function (_React$Component2) {
                     React.createElement(
                         "span",
                         { className: "title" },
-                        "Time Zone:"
+                        "Second:"
                     ),
                     React.createElement(
                         "span",
                         { className: "value" },
-                        date.getTimezoneOffset() / 60
+                        this.getSecondOfYear(date).toLocaleString('en')
                     )
                 ),
                 React.createElement(
@@ -408,12 +408,12 @@ var TimeDetails = (function (_React$Component2) {
                     React.createElement(
                         "span",
                         { className: "title" },
-                        "Second:"
+                        "Time Zone:"
                     ),
                     React.createElement(
                         "span",
                         { className: "value" },
-                        this.getSecondOfYear(date).toLocaleString('en')
+                        date.getTimezoneOffset() / 60
                     )
                 ),
                 React.createElement(
