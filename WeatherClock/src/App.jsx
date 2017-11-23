@@ -61,49 +61,6 @@ ClockFace.defaultProps = {
 
 
 class WeatherForecast extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { channel: {} };
-    }
-
-    getForecast(cb) {
-        let statement = 'select * from weather.forecast where woeid=' + this.props.cities[5].key;
-        let url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' + statement;
-
-        // Fetch the latest data.
-        let request = new XMLHttpRequest();
-        request.onreadystatechange = function () {
-            if (request.readyState === XMLHttpRequest.DONE) {
-                if (request.status === 200) {
-                    let response = JSON.parse(request.response);
-                    let results = response.query.results;
-                    cb(results);
-                }
-            } else {
-                // Return the initial weather forecast since no data is available.
-            }
-        };
-        request.open('GET', url);
-        request.send();
-    }
-
-    refresh() {
-        let that = this;
-        this.getForecast(function(results) {
-            that.setState({ channel: results.channel });
-        });
-    }
-
-    componentDidMount() {
-        let that = this;
-        this.interval = setInterval(() => that.refresh(), 3600000);
-        this.refresh();
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-
     getIconClass(weatherCode) {
         // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes
         weatherCode = parseInt(weatherCode);
@@ -170,15 +127,16 @@ class WeatherForecast extends React.Component {
 
     render() {
         let iconClass = "icon-image";
-        if (this.state.channel.hasOwnProperty('item') && this.state.channel.item.condition.code != "") {
-            iconClass = " icon-image " + this.getIconClass(this.state.channel.item.condition.code);
+        let channel = this.props.channel;
+        if (channel.hasOwnProperty('item') && channel.item.condition.code != "") {
+            iconClass = " icon-image " + this.getIconClass(channel.item.condition.code);
         }
         return (
             <div className="weather-forecast-container">
                 <div className="weather-forecast">
                     <div className="temperature">
-                        {this.state.channel.hasOwnProperty('item') ?
-                            this.state.channel.item.condition.temp + "°" : '?'}
+                        {channel.hasOwnProperty('item') ?
+                            channel.item.condition.temp + "°" : '?'}
                     </div>
                     <div className="icon">
                         <img className={iconClass} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=" />
@@ -188,7 +146,66 @@ class WeatherForecast extends React.Component {
         );
     }
 };
-WeatherForecast.defaultProps = {
+
+
+class WeatherClock extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { channel: {} };
+    }
+
+    getForecast(cb) {
+        let statement = 'select * from weather.forecast where woeid=' + this.props.cities[5].key;
+        let url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' + statement;
+
+        // Fetch the latest data.
+        let request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (request.readyState === XMLHttpRequest.DONE) {
+                if (request.status === 200) {
+                    let response = JSON.parse(request.response);
+                    let results = response.query.results;
+                    cb(results);
+                }
+            } else {
+                // Return the initial weather forecast since no data is available.
+            }
+        };
+        request.open('GET', url);
+        request.send();
+    }
+
+    refresh() {
+        let that = this;
+        this.getForecast(function (results) {
+            that.setState({ channel: results.channel });
+        });
+    }
+
+    componentDidMount() {
+        let that = this;
+        this.refresh();
+        this.interval = setInterval(() => that.refresh(), 3600000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+    render() {
+        return (
+            <div className="app-container">
+                <div className="column1" />
+                <div className="column2" >
+                    <ClockFace />
+                    <WeatherForecast channel={this.state.channel} />
+                </div>
+                <div className="column3" />
+            </div>
+        );
+    }
+};
+WeatherClock.defaultProps = {
     cities: [
         { key: 2357536, label: "Austin, TX" },
         { key: 2379574, label: "Chicago, IL" },
@@ -197,22 +214,6 @@ WeatherForecast.defaultProps = {
         { key: 2487956, label: "San Francisco, CA" },
         { key: 2490383, label: "Seattle, WA" }
     ]
-};
-
-
-class WeatherClock extends React.Component {
-    render() {
-        return (
-            <div className="app-container">
-                <div className="column1" />
-                <div className="column2" >
-                    <ClockFace />
-                    <WeatherForecast />
-                </div>
-                <div className="column3" />
-            </div>
-        );
-    }
 };
 
 

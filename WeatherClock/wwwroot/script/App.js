@@ -116,58 +116,13 @@ ClockFace.defaultProps = {
 var WeatherForecast = (function (_React$Component2) {
     _inherits(WeatherForecast, _React$Component2);
 
-    function WeatherForecast(props) {
+    function WeatherForecast() {
         _classCallCheck(this, WeatherForecast);
 
-        _get(Object.getPrototypeOf(WeatherForecast.prototype), "constructor", this).call(this, props);
-        this.state = { channel: {} };
+        _get(Object.getPrototypeOf(WeatherForecast.prototype), "constructor", this).apply(this, arguments);
     }
 
     _createClass(WeatherForecast, [{
-        key: "getForecast",
-        value: function getForecast(cb) {
-            var statement = 'select * from weather.forecast where woeid=' + this.props.cities[5].key;
-            var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' + statement;
-
-            // Fetch the latest data.
-            var request = new XMLHttpRequest();
-            request.onreadystatechange = function () {
-                if (request.readyState === XMLHttpRequest.DONE) {
-                    if (request.status === 200) {
-                        var response = JSON.parse(request.response);
-                        var results = response.query.results;
-                        cb(results);
-                    }
-                } else {
-                    // Return the initial weather forecast since no data is available.
-                }
-            };
-            request.open('GET', url);
-            request.send();
-        }
-    }, {
-        key: "refresh",
-        value: function refresh() {
-            var that = this;
-            this.getForecast(function (results) {
-                that.setState({ channel: results.channel });
-            });
-        }
-    }, {
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            var that = this;
-            this.interval = setInterval(function () {
-                return that.refresh();
-            }, 3600000);
-            this.refresh();
-        }
-    }, {
-        key: "componentWillUnmount",
-        value: function componentWillUnmount() {
-            clearInterval(this.interval);
-        }
-    }, {
         key: "getIconClass",
         value: function getIconClass(weatherCode) {
             // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes
@@ -244,8 +199,9 @@ var WeatherForecast = (function (_React$Component2) {
         key: "render",
         value: function render() {
             var iconClass = "icon-image";
-            if (this.state.channel.hasOwnProperty('item') && this.state.channel.item.condition.code != "") {
-                iconClass = " icon-image " + this.getIconClass(this.state.channel.item.condition.code);
+            var channel = this.props.channel;
+            if (channel.hasOwnProperty('item') && channel.item.condition.code != "") {
+                iconClass = " icon-image " + this.getIconClass(channel.item.condition.code);
             }
             return React.createElement(
                 "div",
@@ -256,7 +212,7 @@ var WeatherForecast = (function (_React$Component2) {
                     React.createElement(
                         "div",
                         { className: "temperature" },
-                        this.state.channel.hasOwnProperty('item') ? this.state.channel.item.condition.temp + "°" : '?'
+                        channel.hasOwnProperty('item') ? channel.item.condition.temp + "°" : '?'
                     ),
                     React.createElement(
                         "div",
@@ -272,20 +228,62 @@ var WeatherForecast = (function (_React$Component2) {
 })(React.Component);
 
 ;
-WeatherForecast.defaultProps = {
-    cities: [{ key: 2357536, label: "Austin, TX" }, { key: 2379574, label: "Chicago, IL" }, { key: 2459115, label: "New York, NY" }, { key: 2475687, label: "Portland, OR" }, { key: 2487956, label: "San Francisco, CA" }, { key: 2490383, label: "Seattle, WA" }]
-};
 
 var WeatherClock = (function (_React$Component3) {
     _inherits(WeatherClock, _React$Component3);
 
-    function WeatherClock() {
+    function WeatherClock(props) {
         _classCallCheck(this, WeatherClock);
 
-        _get(Object.getPrototypeOf(WeatherClock.prototype), "constructor", this).apply(this, arguments);
+        _get(Object.getPrototypeOf(WeatherClock.prototype), "constructor", this).call(this, props);
+        this.state = { channel: {} };
     }
 
     _createClass(WeatherClock, [{
+        key: "getForecast",
+        value: function getForecast(cb) {
+            var statement = 'select * from weather.forecast where woeid=' + this.props.cities[5].key;
+            var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' + statement;
+
+            // Fetch the latest data.
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function () {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status === 200) {
+                        var response = JSON.parse(request.response);
+                        var results = response.query.results;
+                        cb(results);
+                    }
+                } else {
+                    // Return the initial weather forecast since no data is available.
+                }
+            };
+            request.open('GET', url);
+            request.send();
+        }
+    }, {
+        key: "refresh",
+        value: function refresh() {
+            var that = this;
+            this.getForecast(function (results) {
+                that.setState({ channel: results.channel });
+            });
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var that = this;
+            this.refresh();
+            this.interval = setInterval(function () {
+                return that.refresh();
+            }, 3600000);
+        }
+    }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+            clearInterval(this.interval);
+        }
+    }, {
         key: "render",
         value: function render() {
             return React.createElement(
@@ -296,7 +294,7 @@ var WeatherClock = (function (_React$Component3) {
                     "div",
                     { className: "column2" },
                     React.createElement(ClockFace, null),
-                    React.createElement(WeatherForecast, null)
+                    React.createElement(WeatherForecast, { channel: this.state.channel })
                 ),
                 React.createElement("div", { className: "column3" })
             );
@@ -307,6 +305,9 @@ var WeatherClock = (function (_React$Component3) {
 })(React.Component);
 
 ;
+WeatherClock.defaultProps = {
+    cities: [{ key: 2357536, label: "Austin, TX" }, { key: 2379574, label: "Chicago, IL" }, { key: 2459115, label: "New York, NY" }, { key: 2475687, label: "Portland, OR" }, { key: 2487956, label: "San Francisco, CA" }, { key: 2490383, label: "Seattle, WA" }]
+};
 
 $(document).ready(function () {
     ReactDOM.render(React.createElement(WeatherClock, null), document.getElementById('mount'));
