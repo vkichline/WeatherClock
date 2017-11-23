@@ -220,8 +220,8 @@ var TimeDetails = (function (_React$Component2) {
             return a;
         }
     }, {
-        key: "getDaysinMonth",
-        value: function getDaysinMonth(mm, yy) {
+        key: "getDaysInMonth",
+        value: function getDaysInMonth(mm, yy) {
             mm = parseFloat(mm);
             yy = parseFloat(yy);
             var ndays = 31;
@@ -309,12 +309,21 @@ var TimeDetails = (function (_React$Component2) {
             return Math.floor(diff / 1000);
         }
     }, {
+        key: "isLeapYear",
+        value: function isLeapYear(date) {
+            var year = date.getFullYear();
+            return year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
+        }
+    }, {
         key: "render",
         value: function render() {
             var date = this.state.time;
             var hour = 0.0 + date.getHours() + date.getMinutes() / 60.0 + date.getSeconds() / 3600.0;
             var jday = this.julianDay(date.getFullYear(), date.getMonth(), date.getDate(), hour);
             var st = this.calcLST(date);
+            var doy = this.getDayOfYear(date);
+            var soy = this.getSecondOfYear(date);
+            var poy = soy / ((this.isLeapYear(date) ? 355 : 365) * 86400);
             return React.createElement(
                 "div",
                 { className: "time-details" },
@@ -385,7 +394,21 @@ var TimeDetails = (function (_React$Component2) {
                     React.createElement(
                         "span",
                         { className: "value" },
-                        this.getSecondOfYear(date).toLocaleString('en')
+                        soy.toLocaleString('en')
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "% of Year:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        (poy * 100.0).toFixed(4) + "%"
                     )
                 ),
                 React.createElement(
@@ -399,7 +422,7 @@ var TimeDetails = (function (_React$Component2) {
                     React.createElement(
                         "span",
                         { className: "value" },
-                        this.getDayOfYear(date)
+                        doy
                     )
                 ),
                 React.createElement(

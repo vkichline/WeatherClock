@@ -145,7 +145,7 @@ class TimeDetails extends React.Component {
         if (a < 0) a = 360.0 + a;
         return a;
     }
-    getDaysinMonth(mm, yy) {
+    getDaysInMonth(mm, yy) {
         mm = parseFloat(mm);
         yy = parseFloat(yy);
         let ndays = 31;
@@ -227,21 +227,30 @@ class TimeDetails extends React.Component {
         let start = new Date(date.getFullYear(), 0, 0);
         let diff = (date - start) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60);
         return Math.floor(diff / 1000);
-   }
+    }
+
+    isLeapYear(date) {
+        let year = date.getFullYear();
+        return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+    }
 
     render() {
         let date = this.state.time;
         let hour = 0.0 + date.getHours() + (date.getMinutes() / 60.0) + (date.getSeconds() / 3600.0);
         let jday = this.julianDay(date.getFullYear(), date.getMonth(), date.getDate(), hour);
         let st = this.calcLST(date);
+        let doy = this.getDayOfYear(date);
+        let soy = this.getSecondOfYear(date);
+        let poy = soy / ((this.isLeapYear(date) ? 355 : 365) * 86400);
         return (
             <div className="time-details">
                 <div><span className="title">UTC:</span><span className="value">{this.formatTime(date, true)}</span></div>
                 <div><span className="title">Sidereal Time:</span><span className="value">{this.formatSiderialTime(st)}</span></div>
                 <div><span className="title">Julian Day:</span><span className="value">{jday.toFixed(4).toLocaleString('en')}</span></div>
                 <div><span className="title">GMST:</span><span className="value">{this.getGMST(date).toFixed(4) + "°"}</span></div>
-                <div><span className="title">Second:</span><span className="value">{this.getSecondOfYear(date).toLocaleString('en')}</span></div>
-                <div><span className="title">Day of Year:</span><span className="value">{this.getDayOfYear(date)}</span></div>
+                <div><span className="title">Second:</span><span className="value">{soy.toLocaleString('en')}</span></div>
+                <div><span className="title">% of Year:</span><span className="value">{(poy * 100.0).toFixed(4) + "%"}</span></div>
+                <div><span className="title">Day of Year:</span><span className="value">{doy}</span></div>
                 <div><span className="title">Time Zone:</span><span className="value">{date.getTimezoneOffset() / 60}</span></div>
                 <div><span className="title"></span><span className="value"></span></div>
             </div>
