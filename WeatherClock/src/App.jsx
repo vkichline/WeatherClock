@@ -148,6 +148,31 @@ class WeatherForecast extends React.Component {
 };
 
 
+class WeatherDetails extends React.Component {
+    render() {
+        let channel = this.props.channel;
+        if (!channel.hasOwnProperty('item')) {
+            return <div className="weather-details"></div>;
+        }
+        return (
+            <div className="weather-details">
+                <div><span className="title">Location:</span><span className="value">{channel.location.city}</span></div>
+                <div><span className="title">Wind Chill:</span><span className="value">{channel.wind.chill + "°"} {channel.units.temperature}</span></div>
+                <div><span className="title">Direction:</span><span className="value">{channel.wind.direction + "°"}</span></div>
+                <div><span className="title">Speed:</span><span className="value">{channel.wind.speed} {channel.units.speed}</span></div>
+                <div><span className="title">Humidity:</span><span className="value">{channel.atmosphere.humidity + "%"}</span></div>
+                <div><span className="title">Pressure:</span><span className="value">{channel.atmosphere.pressure}</span></div>
+                <div><span className="title">Visibility:</span><span className="value">{channel.atmosphere.visibility} {channel.units.distance}</span></div>
+                <div><span className="title">Sunrise:</span><span className="value">{channel.astronomy.sunrise}</span></div>
+                <div><span className="title">Sunset:</span><span className="value">{channel.astronomy.sunset}</span></div>
+                <div><span className="title">Latitude:</span><span className="value">{channel.item.lat}</span></div>
+                <div><span className="title">Longitude:</span><span className="value">{channel.item.long}</span></div>
+            </div>
+        );
+    }
+}
+
+
 class WeatherClock extends React.Component {
     constructor(props) {
         super(props);
@@ -155,7 +180,7 @@ class WeatherClock extends React.Component {
     }
 
     getForecast(cb) {
-        let statement = 'select * from weather.forecast where woeid=' + this.props.cities[5].key;
+        let statement = 'select * from weather.forecast where woeid=' + this.props.cities[6].key;
         let url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' + statement;
 
         // Fetch the latest data.
@@ -200,7 +225,9 @@ class WeatherClock extends React.Component {
                     <ClockFace />
                     <WeatherForecast channel={this.state.channel} />
                 </div>
-                <div className="column3" />
+                <div className="column3">
+                    <WeatherDetails channel={this.state.channel} />
+                </div>
             </div>
         );
     }
@@ -212,7 +239,8 @@ WeatherClock.defaultProps = {
         { key: 2459115, label: "New York, NY" },
         { key: 2475687, label: "Portland, OR" },
         { key: 2487956, label: "San Francisco, CA" },
-        { key: 2490383, label: "Seattle, WA" }
+        { key: 2490383, label: "Seattle, WA" },
+        { key: 2433074, label: "Kirkland, WA" }
     ]
 };
 

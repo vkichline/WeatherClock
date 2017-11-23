@@ -13,19 +13,19 @@
 
 .app-container .column1 {
   float: left;
-  width: 25%;
+  width: 20%;
   height: 900px;
   overflow: hidden; }
 
 .app-container .column2 {
   float: left;
-  width: 50%;
+  width: 60%;
   height: 900px;
   overflow: hidden; }
 
 .app-container .column3 {
   float: left;
-  width: 25%;
+  width: 20%;
   height: 900px;
   overflow: hidden; }
 
@@ -125,4 +125,23 @@
 
 .partly-cloudy-day {
   background-image: url("/images/partly-cloudy.png"); }
+
+.weather-details {
+  display: block;
+  padding: 1em 0;
+  text-align: left;
+  font-family: serif;
+  font-size: 25%;
+  color: darkorange; }
+
+.weather-details div {
+  padding: 0;
+  margin: 0 0 .5em 0; }
+
+.weather-details .title {
+  display: inline-block;
+  width: 5em; }
+
+.weather-details .value {
+  color: deepskyblue; }
 

@@ -229,8 +229,194 @@ var WeatherForecast = (function (_React$Component2) {
 
 ;
 
-var WeatherClock = (function (_React$Component3) {
-    _inherits(WeatherClock, _React$Component3);
+var WeatherDetails = (function (_React$Component3) {
+    _inherits(WeatherDetails, _React$Component3);
+
+    function WeatherDetails() {
+        _classCallCheck(this, WeatherDetails);
+
+        _get(Object.getPrototypeOf(WeatherDetails.prototype), "constructor", this).apply(this, arguments);
+    }
+
+    _createClass(WeatherDetails, [{
+        key: "render",
+        value: function render() {
+            var channel = this.props.channel;
+            if (!channel.hasOwnProperty('item')) {
+                return React.createElement("div", { className: "weather-details" });
+            }
+            return React.createElement(
+                "div",
+                { className: "weather-details" },
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Location:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.location.city
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Wind Chill:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.wind.chill + "°",
+                        " ",
+                        channel.units.temperature
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Direction:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.wind.direction + "°"
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Speed:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.wind.speed,
+                        " ",
+                        channel.units.speed
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Humidity:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.atmosphere.humidity + "%"
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Pressure:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.atmosphere.pressure
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Visibility:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.atmosphere.visibility,
+                        " ",
+                        channel.units.distance
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Sunrise:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.astronomy.sunrise
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Sunset:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.astronomy.sunset
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Latitude:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.item.lat
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Longitude:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.item.long
+                    )
+                )
+            );
+        }
+    }]);
+
+    return WeatherDetails;
+})(React.Component);
+
+var WeatherClock = (function (_React$Component4) {
+    _inherits(WeatherClock, _React$Component4);
 
     function WeatherClock(props) {
         _classCallCheck(this, WeatherClock);
@@ -242,7 +428,7 @@ var WeatherClock = (function (_React$Component3) {
     _createClass(WeatherClock, [{
         key: "getForecast",
         value: function getForecast(cb) {
-            var statement = 'select * from weather.forecast where woeid=' + this.props.cities[5].key;
+            var statement = 'select * from weather.forecast where woeid=' + this.props.cities[6].key;
             var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' + statement;
 
             // Fetch the latest data.
@@ -296,7 +482,11 @@ var WeatherClock = (function (_React$Component3) {
                     React.createElement(ClockFace, null),
                     React.createElement(WeatherForecast, { channel: this.state.channel })
                 ),
-                React.createElement("div", { className: "column3" })
+                React.createElement(
+                    "div",
+                    { className: "column3" },
+                    React.createElement(WeatherDetails, { channel: this.state.channel })
+                )
             );
         }
     }]);
@@ -306,7 +496,7 @@ var WeatherClock = (function (_React$Component3) {
 
 ;
 WeatherClock.defaultProps = {
-    cities: [{ key: 2357536, label: "Austin, TX" }, { key: 2379574, label: "Chicago, IL" }, { key: 2459115, label: "New York, NY" }, { key: 2475687, label: "Portland, OR" }, { key: 2487956, label: "San Francisco, CA" }, { key: 2490383, label: "Seattle, WA" }]
+    cities: [{ key: 2357536, label: "Austin, TX" }, { key: 2379574, label: "Chicago, IL" }, { key: 2459115, label: "New York, NY" }, { key: 2475687, label: "Portland, OR" }, { key: 2487956, label: "San Francisco, CA" }, { key: 2490383, label: "Seattle, WA" }, { key: 2433074, label: "Kirkland, WA" }]
 };
 
 $(document).ready(function () {
