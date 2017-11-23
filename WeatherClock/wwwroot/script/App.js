@@ -371,7 +371,7 @@ var TimeDetails = (function (_React$Component2) {
                     React.createElement(
                         "span",
                         { className: "value" },
-                        this.getGMST(date).toFixed(4) + "° RA"
+                        this.getGMST(date).toFixed(4) + "°"
                     )
                 ),
                 React.createElement(
@@ -584,6 +584,20 @@ var WeatherDetails = (function (_React$Component4) {
                     React.createElement(
                         "span",
                         { className: "title" },
+                        "Conditions:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.item.condition.text
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
                         "Wind Chill:"
                     ),
                     React.createElement(
@@ -600,20 +614,6 @@ var WeatherDetails = (function (_React$Component4) {
                     React.createElement(
                         "span",
                         { className: "title" },
-                        "Direction:"
-                    ),
-                    React.createElement(
-                        "span",
-                        { className: "value" },
-                        channel.wind.direction + "°"
-                    )
-                ),
-                React.createElement(
-                    "div",
-                    null,
-                    React.createElement(
-                        "span",
-                        { className: "title" },
                         "Speed:"
                     ),
                     React.createElement(
@@ -622,6 +622,20 @@ var WeatherDetails = (function (_React$Component4) {
                         channel.wind.speed,
                         " ",
                         channel.units.speed
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Direction:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        channel.wind.direction + "°"
                     )
                 ),
                 React.createElement(

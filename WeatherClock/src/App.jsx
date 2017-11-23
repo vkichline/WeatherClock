@@ -239,7 +239,7 @@ class TimeDetails extends React.Component {
                 <div><span className="title">UTC:</span><span className="value">{this.formatTime(date, true)}</span></div>
                 <div><span className="title">Sidereal Time:</span><span className="value">{this.formatSiderialTime(st)}</span></div>
                 <div><span className="title">Julian Day:</span><span className="value">{jday.toFixed(4).toLocaleString('en')}</span></div>
-                <div><span className="title">GMST:</span><span className="value">{this.getGMST(date).toFixed(4) + "° RA"}</span></div>
+                <div><span className="title">GMST:</span><span className="value">{this.getGMST(date).toFixed(4) + "°"}</span></div>
                 <div><span className="title">Second:</span><span className="value">{this.getSecondOfYear(date).toLocaleString('en')}</span></div>
                 <div><span className="title">Day of Year:</span><span className="value">{this.getDayOfYear(date)}</span></div>
                 <div><span className="title">Time Zone:</span><span className="value">{date.getTimezoneOffset() / 60}</span></div>
@@ -347,9 +347,10 @@ class WeatherDetails extends React.Component {
         return (
             <div className="weather-details">
                 <div><span className="title">Location:</span><span className="value">{channel.location.city}</span></div>
+                <div><span className="title">Conditions:</span><span className="value">{channel.item.condition.text}</span></div>
                 <div><span className="title">Wind Chill:</span><span className="value">{channel.wind.chill + "°"} {channel.units.temperature}</span></div>
-                <div><span className="title">Direction:</span><span className="value">{channel.wind.direction + "°"}</span></div>
                 <div><span className="title">Speed:</span><span className="value">{channel.wind.speed} {channel.units.speed}</span></div>
+                <div><span className="title">Direction:</span><span className="value">{channel.wind.direction + "°"}</span></div>
                 <div><span className="title">Humidity:</span><span className="value">{channel.atmosphere.humidity + "%"}</span></div>
                 <div><span className="title">Pressure:</span><span className="value">{channel.atmosphere.pressure}</span></div>
                 <div><span className="title">Visibility:</span><span className="value">{channel.atmosphere.visibility} {channel.units.distance}</span></div>
