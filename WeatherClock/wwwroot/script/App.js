@@ -1,12 +1,84 @@
-﻿"use strict";
+﻿'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function getIconClass(weatherCode) {
+    // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes
+    weatherCode = parseInt(weatherCode);
+    switch (weatherCode) {
+        case 25: // cold
+        case 32: // sunny
+        case 33: // fair (night)
+        case 34: // fair (day)
+        case 36: // hot
+        case 3200:
+            // not available
+            return 'clear-day';
+        case 0: // tornado
+        case 1: // tropical storm
+        case 2: // hurricane
+        case 6: // mixed rain and sleet
+        case 8: // freezing drizzle
+        case 9: // drizzle
+        case 10: // freezing rain
+        case 11: // showers
+        case 12: // showers
+        case 17: // hail
+        case 35: // mixed rain and hail
+        case 39: // scattered showers
+        case 40:
+            // scattered showers
+            return 'rain';
+        case 3: // severe thunderstorms
+        case 4: // thunderstorms
+        case 37: // isolated thunderstorms
+        case 38: // scattered thunderstorms
+        case 45: // thundershowers
+        case 47:
+            // isolated thundershowers
+            return 'thunderstorms';
+        case 5: // mixed rain and snow
+        case 7: // mixed snow and sleet
+        case 13: // snow flurries
+        case 14: // light snow showers
+        case 16: // snow
+        case 18: // sleet
+        case 41: // heavy snow
+        case 42: // scattered snow showers
+        case 43: // heavy snow
+        case 46:
+            // snow showers
+            return 'snow';
+        case 15: // blowing snow
+        case 19: // dust
+        case 20: // foggy
+        case 21: // haze
+        case 22:
+            // smoky
+            return 'fog';
+        case 24: // windy
+        case 23:
+            // blustery
+            return 'windy';
+        case 26: // cloudy
+        case 27: // mostly cloudy (night)
+        case 28: // mostly cloudy (day)
+        case 31:
+            // clear (night)
+            return 'cloudy';
+        case 29: // partly cloudy (night)
+        case 30: // partly cloudy (day)
+        case 44:
+            // partly cloudy
+            return 'partly-cloudy-day';
+    }
+}
 
 var ClockFace = (function (_React$Component) {
     _inherits(ClockFace, _React$Component);
@@ -14,12 +86,12 @@ var ClockFace = (function (_React$Component) {
     function ClockFace(props) {
         _classCallCheck(this, ClockFace);
 
-        _get(Object.getPrototypeOf(ClockFace.prototype), "constructor", this).call(this, props);
+        _get(Object.getPrototypeOf(ClockFace.prototype), 'constructor', this).call(this, props);
         this.state = { time: new Date() };
     }
 
     _createClass(ClockFace, [{
-        key: "tick",
+        key: 'tick',
         value: function tick() {
             this.setState(function (prevState) {
                 return {
@@ -28,7 +100,7 @@ var ClockFace = (function (_React$Component) {
             });
         }
     }, {
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
             var _this = this;
 
@@ -37,12 +109,12 @@ var ClockFace = (function (_React$Component) {
             }, 1000);
         }
     }, {
-        key: "componentWillUnmount",
+        key: 'componentWillUnmount',
         value: function componentWillUnmount() {
             clearInterval(this.interval);
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var time = this.state.time;
             var hours = time.getHours();
@@ -58,43 +130,43 @@ var ClockFace = (function (_React$Component) {
             var strMonth = this.props.months[time.getMonth()];
             var strDate = strDay + " " + strMonth + " " + time.getDate() + ", " + time.getFullYear();
             return React.createElement(
-                "div",
-                { className: "clock-face-container" },
+                'div',
+                { className: 'clock-face-container' },
                 React.createElement(
-                    "table",
-                    { className: "clock-face" },
+                    'table',
+                    { className: 'clock-face' },
                     React.createElement(
-                        "tbody",
+                        'tbody',
                         null,
                         React.createElement(
-                            "tr",
+                            'tr',
                             null,
                             React.createElement(
-                                "td",
-                                { rowSpan: "2", className: "time" },
+                                'td',
+                                { rowSpan: '2', className: 'time' },
                                 strHours + ":" + strMinutes
                             ),
                             React.createElement(
-                                "td",
-                                { className: "seconds" },
+                                'td',
+                                { className: 'seconds' },
                                 strSeconds
                             )
                         ),
                         React.createElement(
-                            "tr",
+                            'tr',
                             null,
                             React.createElement(
-                                "td",
-                                { className: "ampm" },
+                                'td',
+                                { className: 'ampm' },
                                 ispm ? "pm" : "am"
                             )
                         ),
                         React.createElement(
-                            "tr",
+                            'tr',
                             null,
                             React.createElement(
-                                "td",
-                                { colSpan: "2", className: "date" },
+                                'td',
+                                { colSpan: '2', className: 'date' },
                                 strDate
                             )
                         )
@@ -119,12 +191,12 @@ var TimeDetails = (function (_React$Component2) {
     function TimeDetails(props) {
         _classCallCheck(this, TimeDetails);
 
-        _get(Object.getPrototypeOf(TimeDetails.prototype), "constructor", this).call(this, props);
+        _get(Object.getPrototypeOf(TimeDetails.prototype), 'constructor', this).call(this, props);
         this.state = { time: new Date() };
     }
 
     _createClass(TimeDetails, [{
-        key: "tick",
+        key: 'tick',
         value: function tick() {
             this.setState(function (prevState) {
                 return {
@@ -133,7 +205,7 @@ var TimeDetails = (function (_React$Component2) {
             });
         }
     }, {
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
             var _this2 = this;
 
@@ -142,12 +214,12 @@ var TimeDetails = (function (_React$Component2) {
             }, 1000);
         }
     }, {
-        key: "componentWillUnmount",
+        key: 'componentWillUnmount',
         value: function componentWillUnmount() {
             clearInterval(this.interval);
         }
     }, {
-        key: "formatTime",
+        key: 'formatTime',
         value: function formatTime(date, asUtc) {
             var hours = asUtc ? date.getUTCHours() : date.getHours();
             var minutes = asUtc ? date.getUTCMinutes() : date.getMinutes();
@@ -158,7 +230,7 @@ var TimeDetails = (function (_React$Component2) {
             return hours.toString() + ":" + (minutes < 10 ? "0" + minutes : minutes.toString()) + ":" + (seconds < 10 ? "0" + seconds : seconds.toString()) + " " + (ispm ? "PM" : "AM");
         }
     }, {
-        key: "formatSiderialTime",
+        key: 'formatSiderialTime',
         value: function formatSiderialTime(st) {
             var minute = st % 1 * 60;
             var hour = Math.trunc(st);
@@ -170,7 +242,7 @@ var TimeDetails = (function (_React$Component2) {
 
         // From https://www.iiap.res.in/personnel/reks/software/javascript/calclst.php
     }, {
-        key: "calcLST",
+        key: 'calcLST',
         value: function calcLST(date) {
             var tzone = -1.0 * date.getTimezoneOffset() / 60.0;
             var lsign = -1;
@@ -193,13 +265,13 @@ var TimeDetails = (function (_React$Component2) {
             return lst;
         }
     }, {
-        key: "getDayno2K",
+        key: 'getDayno2K',
         value: function getDayno2K(yy, mm, dd, hr) {
             var jd = this.julianDay(yy, mm, dd, hr);
             return parseFloat(jd) - 2451543.5;
         }
     }, {
-        key: "modDay",
+        key: 'modDay',
         value: function modDay(val) {
             var b = val / 24.0;
             var a = 24.0 * (b - this.absFloor(b));
@@ -207,12 +279,12 @@ var TimeDetails = (function (_React$Component2) {
             return a;
         }
     }, {
-        key: "absFloor",
+        key: 'absFloor',
         value: function absFloor(val) {
             if (val >= 0.0) return Math.floor(val);else return Math.ceil(val);
         }
     }, {
-        key: "mod2pi",
+        key: 'mod2pi',
         value: function mod2pi(angle) {
             var b = angle / 360.0;
             var a = 360.0 * (b - this.absFloor(b));
@@ -220,7 +292,7 @@ var TimeDetails = (function (_React$Component2) {
             return a;
         }
     }, {
-        key: "getDaysInMonth",
+        key: 'getDaysInMonth',
         value: function getDaysInMonth(mm, yy) {
             mm = parseFloat(mm);
             yy = parseFloat(yy);
@@ -235,7 +307,7 @@ var TimeDetails = (function (_React$Component2) {
             return ndays;
         }
     }, {
-        key: "julianDay",
+        key: 'julianDay',
         value: function julianDay(yy, mm, dd, hh) {
             mm = parseFloat(mm);
             yy = parseFloat(yy);
@@ -255,7 +327,7 @@ var TimeDetails = (function (_React$Component2) {
 
         // From http://indigotide.com/software/siderealsource.html
     }, {
-        key: "getGMST",
+        key: 'getGMST',
         value: function getGMST(now) {
             var year = now.getUTCFullYear(); // get UTC from computer clock date & time (var now)
             var month = now.getUTCMonth() + 1;
@@ -294,7 +366,7 @@ var TimeDetails = (function (_React$Component2) {
 
         // From https://stackoverflow.com/questions/8619879/javascript-calculate-the-day-of-the-year-1-366
     }, {
-        key: "getDayOfYear",
+        key: 'getDayOfYear',
         value: function getDayOfYear(date) {
             var start = new Date(date.getFullYear(), 0, 0);
             var diff = date - start + (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
@@ -302,20 +374,20 @@ var TimeDetails = (function (_React$Component2) {
             return Math.floor(diff / oneDay);
         }
     }, {
-        key: "getSecondOfYear",
+        key: 'getSecondOfYear',
         value: function getSecondOfYear(date) {
             var start = new Date(date.getFullYear(), 0, 0);
             var diff = date - start + (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60;
             return Math.floor(diff / 1000);
         }
     }, {
-        key: "isLeapYear",
+        key: 'isLeapYear',
         value: function isLeapYear(date) {
             var year = date.getFullYear();
             return year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var date = this.state.time;
             var year = date.getFullYear();
@@ -328,167 +400,167 @@ var TimeDetails = (function (_React$Component2) {
             var soy = this.getSecondOfYear(date);
             var poy = soy / ((this.isLeapYear(date) ? 355 : 365) * 86400);
             return React.createElement(
-                "div",
-                { className: "time-details" },
+                'div',
+                { className: 'time-details' },
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "UTC:"
+                        'span',
+                        { className: 'title' },
+                        'UTC:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         this.formatTime(date, true)
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Sidereal Time:"
+                        'span',
+                        { className: 'title' },
+                        'Sidereal Time:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         this.formatSiderialTime(st)
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Julian Day:"
+                        'span',
+                        { className: 'title' },
+                        'Julian Day:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         jday.toFixed(4).toLocaleString('en')
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "GMST:"
+                        'span',
+                        { className: 'title' },
+                        'GMST:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         this.getGMST(date).toFixed(4) + "°"
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Second:"
+                        'span',
+                        { className: 'title' },
+                        'Second:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         soy.toLocaleString('en')
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "% of Year:"
+                        'span',
+                        { className: 'title' },
+                        '% of Year:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         (poy * 100.0).toFixed(4) + "%"
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Day of Year:"
+                        'span',
+                        { className: 'title' },
+                        'Day of Year:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         doy
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Year:"
+                        'span',
+                        { className: 'title' },
+                        'Year:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         year
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Month:"
+                        'span',
+                        { className: 'title' },
+                        'Month:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         month
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Day:"
+                        'span',
+                        { className: 'title' },
+                        'Day:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         day
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Time Zone:"
+                        'span',
+                        { className: 'title' },
+                        'Time Zone:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         date.getTimezoneOffset() / 60
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
-                    React.createElement("span", { className: "title" }),
-                    React.createElement("span", { className: "value" })
+                    React.createElement('span', { className: 'title' }),
+                    React.createElement('span', { className: 'value' })
                 )
             );
         }
@@ -503,105 +575,32 @@ var WeatherStatus = (function (_React$Component3) {
     function WeatherStatus() {
         _classCallCheck(this, WeatherStatus);
 
-        _get(Object.getPrototypeOf(WeatherStatus.prototype), "constructor", this).apply(this, arguments);
+        _get(Object.getPrototypeOf(WeatherStatus.prototype), 'constructor', this).apply(this, arguments);
     }
 
     _createClass(WeatherStatus, [{
-        key: "getIconClass",
-        value: function getIconClass(weatherCode) {
-            // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes
-            weatherCode = parseInt(weatherCode);
-            switch (weatherCode) {
-                case 25: // cold
-                case 32: // sunny
-                case 33: // fair (night)
-                case 34: // fair (day)
-                case 36: // hot
-                case 3200:
-                    // not available
-                    return 'clear-day';
-                case 0: // tornado
-                case 1: // tropical storm
-                case 2: // hurricane
-                case 6: // mixed rain and sleet
-                case 8: // freezing drizzle
-                case 9: // drizzle
-                case 10: // freezing rain
-                case 11: // showers
-                case 12: // showers
-                case 17: // hail
-                case 35: // mixed rain and hail
-                case 39: // scattered showers
-                case 40:
-                    // scattered showers
-                    return 'rain';
-                case 3: // severe thunderstorms
-                case 4: // thunderstorms
-                case 37: // isolated thunderstorms
-                case 38: // scattered thunderstorms
-                case 45: // thundershowers
-                case 47:
-                    // isolated thundershowers
-                    return 'thunderstorms';
-                case 5: // mixed rain and snow
-                case 7: // mixed snow and sleet
-                case 13: // snow flurries
-                case 14: // light snow showers
-                case 16: // snow
-                case 18: // sleet
-                case 41: // heavy snow
-                case 42: // scattered snow showers
-                case 43: // heavy snow
-                case 46:
-                    // snow showers
-                    return 'snow';
-                case 15: // blowing snow
-                case 19: // dust
-                case 20: // foggy
-                case 21: // haze
-                case 22:
-                    // smoky
-                    return 'fog';
-                case 24: // windy
-                case 23:
-                    // blustery
-                    return 'windy';
-                case 26: // cloudy
-                case 27: // mostly cloudy (night)
-                case 28: // mostly cloudy (day)
-                case 31:
-                    // clear (night)
-                    return 'cloudy';
-                case 29: // partly cloudy (night)
-                case 30: // partly cloudy (day)
-                case 44:
-                    // partly cloudy
-                    return 'partly-cloudy-day';
-            }
-        }
-    }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var iconClass = "icon-image";
             var channel = this.props.channel;
             if (channel.hasOwnProperty('item') && channel.item.condition.code != "") {
-                iconClass = " icon-image " + this.getIconClass(channel.item.condition.code);
+                iconClass = " icon-image " + getIconClass(channel.item.condition.code);
             }
             return React.createElement(
-                "div",
-                { className: "weather-status-container" },
+                'div',
+                { className: 'weather-status-container' },
                 React.createElement(
-                    "div",
-                    { className: "weather-status" },
+                    'div',
+                    { className: 'weather-status' },
                     React.createElement(
-                        "div",
-                        { className: "temperature" },
+                        'div',
+                        { className: 'temperature' },
                         channel.hasOwnProperty('item') ? channel.item.condition.temp + "°" : '?'
                     ),
                     React.createElement(
-                        "div",
-                        { className: "icon" },
-                        React.createElement("img", { className: iconClass, src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=" })
+                        'div',
+                        { className: 'icon' },
+                        React.createElement('img', { className: iconClass, src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=' })
                     )
                 )
             );
@@ -619,190 +618,190 @@ var WeatherDetails = (function (_React$Component4) {
     function WeatherDetails() {
         _classCallCheck(this, WeatherDetails);
 
-        _get(Object.getPrototypeOf(WeatherDetails.prototype), "constructor", this).apply(this, arguments);
+        _get(Object.getPrototypeOf(WeatherDetails.prototype), 'constructor', this).apply(this, arguments);
     }
 
     _createClass(WeatherDetails, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             var channel = this.props.channel;
             if (!channel.hasOwnProperty('item')) {
-                return React.createElement("div", { className: "weather-details" });
+                return React.createElement('div', { className: 'weather-details' });
             }
             return React.createElement(
-                "div",
-                { className: "weather-details" },
+                'div',
+                { className: 'weather-details' },
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Location:"
+                        'span',
+                        { className: 'title' },
+                        'Location:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.location.city
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Conditions:"
+                        'span',
+                        { className: 'title' },
+                        'Conditions:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.item.condition.text
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Wind Chill:"
+                        'span',
+                        { className: 'title' },
+                        'Wind Chill:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.wind.chill + "°",
-                        " ",
+                        ' ',
                         channel.units.temperature
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Speed:"
+                        'span',
+                        { className: 'title' },
+                        'Speed:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.wind.speed,
-                        " ",
+                        ' ',
                         channel.units.speed
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Direction:"
+                        'span',
+                        { className: 'title' },
+                        'Direction:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.wind.direction + "°"
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Humidity:"
+                        'span',
+                        { className: 'title' },
+                        'Humidity:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.atmosphere.humidity + "%"
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Pressure:"
+                        'span',
+                        { className: 'title' },
+                        'Pressure:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.atmosphere.pressure
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Visibility:"
+                        'span',
+                        { className: 'title' },
+                        'Visibility:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.atmosphere.visibility,
-                        " ",
+                        ' ',
                         channel.units.distance
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Sunrise:"
+                        'span',
+                        { className: 'title' },
+                        'Sunrise:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.astronomy.sunrise
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Sunset:"
+                        'span',
+                        { className: 'title' },
+                        'Sunset:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.astronomy.sunset
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Latitude:"
+                        'span',
+                        { className: 'title' },
+                        'Latitude:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.item.lat
                     )
                 ),
                 React.createElement(
-                    "div",
+                    'div',
                     null,
                     React.createElement(
-                        "span",
-                        { className: "title" },
-                        "Longitude:"
+                        'span',
+                        { className: 'title' },
+                        'Longitude:'
                     ),
                     React.createElement(
-                        "span",
-                        { className: "value" },
+                        'span',
+                        { className: 'value' },
                         channel.item.long
                     )
                 )
@@ -819,38 +818,40 @@ var ForecastBlock = (function (_React$Component5) {
     function ForecastBlock() {
         _classCallCheck(this, ForecastBlock);
 
-        _get(Object.getPrototypeOf(ForecastBlock.prototype), "constructor", this).apply(this, arguments);
+        _get(Object.getPrototypeOf(ForecastBlock.prototype), 'constructor', this).apply(this, arguments);
     }
 
     _createClass(ForecastBlock, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             var fc = this.props.forecast;
             var when = fc.day + ", " + fc.date;
+            var iconClass = "icon-image " + getIconClass(this.props.forecast.code);
             return React.createElement(
-                "div",
-                { className: "forecast-block" },
+                'div',
+                { className: 'forecast-block' },
                 React.createElement(
-                    "div",
-                    { className: "content" },
+                    'div',
+                    { className: 'content' },
                     React.createElement(
-                        "div",
-                        { className: "center medium" },
+                        'div',
+                        { className: 'center medium' },
                         when
                     ),
                     React.createElement(
-                        "div",
-                        { className: "center large" },
+                        'div',
+                        { className: 'center large' },
                         fc.low,
-                        "° / ",
+                        '° / ',
                         fc.high,
-                        "°"
+                        '°'
                     ),
                     React.createElement(
-                        "div",
-                        { className: "center small" },
+                        'div',
+                        { className: 'center small' },
                         fc.text
-                    )
+                    ),
+                    React.createElement('img', { className: iconClass, src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=' })
                 )
             );
         }
@@ -865,16 +866,16 @@ var WeatherForecast = (function (_React$Component6) {
     function WeatherForecast() {
         _classCallCheck(this, WeatherForecast);
 
-        _get(Object.getPrototypeOf(WeatherForecast.prototype), "constructor", this).apply(this, arguments);
+        _get(Object.getPrototypeOf(WeatherForecast.prototype), 'constructor', this).apply(this, arguments);
     }
 
     _createClass(WeatherForecast, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             if (this.props.channel.hasOwnProperty("item")) {
                 return React.createElement(
-                    "div",
-                    { className: "weather-forecast" },
+                    'div',
+                    { className: 'weather-forecast' },
                     React.createElement(ForecastBlock, { forecast: this.props.channel.item.forecast[0] }),
                     React.createElement(ForecastBlock, { forecast: this.props.channel.item.forecast[1] }),
                     React.createElement(ForecastBlock, { forecast: this.props.channel.item.forecast[2] }),
@@ -884,7 +885,7 @@ var WeatherForecast = (function (_React$Component6) {
                     React.createElement(ForecastBlock, { forecast: this.props.channel.item.forecast[7] })
                 );
             } else {
-                return React.createElement("div", { className: "weather-forecast" });
+                return React.createElement('div', { className: 'weather-forecast' });
             }
         }
     }]);
@@ -898,12 +899,12 @@ var WeatherClock = (function (_React$Component7) {
     function WeatherClock(props) {
         _classCallCheck(this, WeatherClock);
 
-        _get(Object.getPrototypeOf(WeatherClock.prototype), "constructor", this).call(this, props);
+        _get(Object.getPrototypeOf(WeatherClock.prototype), 'constructor', this).call(this, props);
         this.state = { channel: {} };
     }
 
     _createClass(WeatherClock, [{
-        key: "getForecast",
+        key: 'getForecast',
         value: function getForecast(cb) {
             var statement = 'select * from weather.forecast where woeid=' + this.props.cities[6].key;
             var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' + statement;
@@ -925,7 +926,7 @@ var WeatherClock = (function (_React$Component7) {
             request.send();
         }
     }, {
-        key: "refresh",
+        key: 'refresh',
         value: function refresh() {
             var that = this;
             this.getForecast(function (results) {
@@ -933,7 +934,7 @@ var WeatherClock = (function (_React$Component7) {
             });
         }
     }, {
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
             var that = this;
             this.refresh();
@@ -942,30 +943,30 @@ var WeatherClock = (function (_React$Component7) {
             }, 3600000);
         }
     }, {
-        key: "componentWillUnmount",
+        key: 'componentWillUnmount',
         value: function componentWillUnmount() {
             clearInterval(this.interval);
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             return React.createElement(
-                "div",
-                { className: "app-container" },
+                'div',
+                { className: 'app-container' },
                 React.createElement(
-                    "div",
-                    { className: "column1" },
+                    'div',
+                    { className: 'column1' },
                     React.createElement(TimeDetails, null)
                 ),
                 React.createElement(
-                    "div",
-                    { className: "column2" },
+                    'div',
+                    { className: 'column2' },
                     React.createElement(ClockFace, null),
                     React.createElement(WeatherStatus, { channel: this.state.channel })
                 ),
                 React.createElement(
-                    "div",
-                    { className: "column3" },
+                    'div',
+                    { className: 'column3' },
                     React.createElement(WeatherDetails, { channel: this.state.channel })
                 ),
                 React.createElement(WeatherForecast, { channel: this.state.channel })

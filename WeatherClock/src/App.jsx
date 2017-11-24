@@ -1,4 +1,70 @@
-﻿class ClockFace extends React.Component {
+﻿function getIconClass(weatherCode) {
+    // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes
+    weatherCode = parseInt(weatherCode);
+    switch (weatherCode) {
+        case 25: // cold
+        case 32: // sunny
+        case 33: // fair (night)
+        case 34: // fair (day)
+        case 36: // hot
+        case 3200: // not available
+            return 'clear-day';
+        case 0: // tornado
+        case 1: // tropical storm
+        case 2: // hurricane
+        case 6: // mixed rain and sleet
+        case 8: // freezing drizzle
+        case 9: // drizzle
+        case 10: // freezing rain
+        case 11: // showers
+        case 12: // showers
+        case 17: // hail
+        case 35: // mixed rain and hail
+        case 39: // scattered showers
+        case 40: // scattered showers
+            return 'rain';
+        case 3: // severe thunderstorms
+        case 4: // thunderstorms
+        case 37: // isolated thunderstorms
+        case 38: // scattered thunderstorms
+        case 45: // thundershowers
+        case 47: // isolated thundershowers
+            return 'thunderstorms';
+        case 5: // mixed rain and snow
+        case 7: // mixed snow and sleet
+        case 13: // snow flurries
+        case 14: // light snow showers
+        case 16: // snow
+        case 18: // sleet
+        case 41: // heavy snow
+        case 42: // scattered snow showers
+        case 43: // heavy snow
+        case 46: // snow showers
+            return 'snow';
+        case 15: // blowing snow
+        case 19: // dust
+        case 20: // foggy
+        case 21: // haze
+        case 22: // smoky
+            return 'fog';
+        case 24: // windy
+        case 23: // blustery
+            return 'windy';
+        case 26: // cloudy
+        case 27: // mostly cloudy (night)
+        case 28: // mostly cloudy (day)
+        case 31: // clear (night)
+            return 'cloudy';
+        case 29: // partly cloudy (night)
+        case 30: // partly cloudy (day)
+        case 44: // partly cloudy
+            return 'partly-cloudy-day';
+    }
+}
+
+
+
+class ClockFace extends React.Component {
     constructor(props) {
         super(props);
         this.state = { time: new Date() };
@@ -100,7 +166,7 @@ class TimeDetails extends React.Component {
         second = Math.trunc(second);
         return (hour.toString() + ":" +
             (minute < 10 ? "0" + minute : minute.toString()) + ":" +
-                (second < 10 ? "0" + second : second.toString()));
+            (second < 10 ? "0" + second : second.toString()));
     }
 
     // From https://www.iiap.res.in/personnel/reks/software/javascript/calclst.php
@@ -266,75 +332,11 @@ class TimeDetails extends React.Component {
 
 
 class WeatherStatus extends React.Component {
-    getIconClass(weatherCode) {
-        // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes
-        weatherCode = parseInt(weatherCode);
-        switch (weatherCode) {
-            case 25: // cold
-            case 32: // sunny
-            case 33: // fair (night)
-            case 34: // fair (day)
-            case 36: // hot
-            case 3200: // not available
-                return 'clear-day';
-            case 0: // tornado
-            case 1: // tropical storm
-            case 2: // hurricane
-            case 6: // mixed rain and sleet
-            case 8: // freezing drizzle
-            case 9: // drizzle
-            case 10: // freezing rain
-            case 11: // showers
-            case 12: // showers
-            case 17: // hail
-            case 35: // mixed rain and hail
-            case 39: // scattered showers
-            case 40: // scattered showers
-                return 'rain';
-            case 3: // severe thunderstorms
-            case 4: // thunderstorms
-            case 37: // isolated thunderstorms
-            case 38: // scattered thunderstorms
-            case 45: // thundershowers
-            case 47: // isolated thundershowers
-                return 'thunderstorms';
-            case 5: // mixed rain and snow
-            case 7: // mixed snow and sleet
-            case 13: // snow flurries
-            case 14: // light snow showers
-            case 16: // snow
-            case 18: // sleet
-            case 41: // heavy snow
-            case 42: // scattered snow showers
-            case 43: // heavy snow
-            case 46: // snow showers
-                return 'snow';
-            case 15: // blowing snow
-            case 19: // dust
-            case 20: // foggy
-            case 21: // haze
-            case 22: // smoky
-                return 'fog';
-            case 24: // windy
-            case 23: // blustery
-                return 'windy';
-            case 26: // cloudy
-            case 27: // mostly cloudy (night)
-            case 28: // mostly cloudy (day)
-            case 31: // clear (night)
-                return 'cloudy';
-            case 29: // partly cloudy (night)
-            case 30: // partly cloudy (day)
-            case 44: // partly cloudy
-                return 'partly-cloudy-day';
-        }
-    }
-
     render() {
         let iconClass = "icon-image";
         let channel = this.props.channel;
         if (channel.hasOwnProperty('item') && channel.item.condition.code != "") {
-            iconClass = " icon-image " + this.getIconClass(channel.item.condition.code);
+            iconClass = " icon-image " + getIconClass(channel.item.condition.code);
         }
         return (
             <div className="weather-status-container">
@@ -383,12 +385,14 @@ class ForecastBlock extends React.Component {
     render() {
         let fc = this.props.forecast;
         let when = fc.day + ", " + fc.date;
+        let iconClass = "icon-image " + getIconClass(this.props.forecast.code);
         return (
             <div className="forecast-block">
                 <div className="content">
                     <div className="center medium">{when}</div>
                     <div className="center large">{fc.low}° / {fc.high}°</div>
                     <div className="center small">{fc.text}</div>
+                    <img className={iconClass} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=" />
                 </div>
             </div>
         );

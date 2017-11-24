@@ -31,7 +31,7 @@
   text-align: center; }
 
 .clock-face {
-  margin: 0 auto;
+  margin: .4em auto 0 auto;
   border-collapse: collapse;
   table-layout: fixed;
   font-family: sans-serif; }
@@ -125,6 +125,7 @@
 
 .weather-details {
   display: block;
+  margin-top: 1em;
   padding: 1em 0;
   text-align: left;
   font-family: serif;
@@ -147,8 +148,7 @@
   font-size: 25%;
   clear: both;
   width: 100%;
-  height: 15em;
-  padding-top: 5em;
+  padding-top: 3em;
   padding-left: .5em; }
 
 .weather-forecast .forecast-block {
@@ -158,7 +158,8 @@
   border: 2px solid white;
   background-color: #1f0036;
   border-radius: 1em;
-  margin: .5em;
+  border-color: gray;
+  margin: .6em;
   padding: 1em; }
 
 .weather-forecast .forecast-block .content {
@@ -177,8 +178,19 @@
 .weather-forecast .forecast-block .content .large {
   font-size: 100%; }
 
+.weather-forecast .forecast-block .content .icon-image {
+  display: block;
+  margin: auto;
+  margin-top: .5em;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 3em;
+  width: 3em; }
+
 .time-details {
   display: block;
+  margin: 1em 0 0 .5em;
   padding: 1em 0;
   text-align: left;
   font-family: serif;
