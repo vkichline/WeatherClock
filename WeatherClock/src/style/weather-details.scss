@@ -5,7 +5,7 @@
     text-align: left;
     font-family: serif;
     font-size: 25%;
-    color: darkorange;
+    color: $details-value-color;
 }
 
 .weather-details div {
@@ -19,5 +19,11 @@
 }
 
 .weather-details .value {
-    color: deepskyblue;
+    color: $details-title-color;
+}
+
+.weather-details .no-title {
+    display: inline-block;
+    font-size: 125%;
+    color: $details-title-color;
 }

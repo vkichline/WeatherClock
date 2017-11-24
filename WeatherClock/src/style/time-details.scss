@@ -5,7 +5,7 @@
     text-align: left;
     font-family: serif;
     font-size: 25%;
-    color: darkorange;
+    color: $details-value-color;
 }
 
 .time-details div {
@@ -16,7 +16,7 @@
 .time-details .title {
     display: inline-block;
     width: 6.5em;
-    color: deepskyblue;
+    color: $details-title-color;
 }
 
 .time-details .value {

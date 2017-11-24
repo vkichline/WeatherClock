@@ -1,4 +1,25 @@
-﻿'use strict';
+﻿////////////////////////////////////////////////////////////////////////////////
+//
+//  Weather Clock
+//
+//  A program designed to display a wall clock face on a specific piece of
+//  hardware: a Raspberry Pi coupled with a rescued 1600 X 900 laptop screen.
+//
+//  Van Kichline
+//  November 2017
+//
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Utility routines:
+//
+//  geticonClass is used by a couple components to select the css class to be
+//      used to display a specific weather icon.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -80,6 +101,14 @@ function getIconClass(weatherCode) {
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  ClockFace class
+//  Displays the time, AM/PM, and day/date in center of app
+//  Properties: time is a JavaScript Date object.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 var ClockFace = (function (_React$Component) {
     _inherits(ClockFace, _React$Component);
 
@@ -87,36 +116,12 @@ var ClockFace = (function (_React$Component) {
         _classCallCheck(this, ClockFace);
 
         _get(Object.getPrototypeOf(ClockFace.prototype), 'constructor', this).call(this, props);
-        this.state = { time: new Date() };
     }
 
     _createClass(ClockFace, [{
-        key: 'tick',
-        value: function tick() {
-            this.setState(function (prevState) {
-                return {
-                    time: new Date()
-                };
-            });
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this = this;
-
-            this.interval = setInterval(function () {
-                return _this.tick();
-            }, 1000);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            clearInterval(this.interval);
-        }
-    }, {
         key: 'render',
         value: function render() {
-            var time = this.state.time;
+            var time = this.props.time;
             var hours = time.getHours();
             var minutes = time.getMinutes();
             var seconds = time.getSeconds();
@@ -185,6 +190,13 @@ ClockFace.defaultProps = {
     month_abbrev: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 };
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Renders the vertical pane with details about current time.
+//  Properties: time is a JavaScript Date object.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 var TimeDetails = (function (_React$Component2) {
     _inherits(TimeDetails, _React$Component2);
 
@@ -192,33 +204,15 @@ var TimeDetails = (function (_React$Component2) {
         _classCallCheck(this, TimeDetails);
 
         _get(Object.getPrototypeOf(TimeDetails.prototype), 'constructor', this).call(this, props);
-        this.state = { time: new Date() };
     }
 
-    _createClass(TimeDetails, [{
-        key: 'tick',
-        value: function tick() {
-            this.setState(function (prevState) {
-                return {
-                    time: new Date()
-                };
-            });
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
+    ////////////////////////////////////////////////////////////////////////////////
+    //
+    //  Renders the current temperature and condition icon for local weather.
+    //
+    ////////////////////////////////////////////////////////////////////////////////
 
-            this.interval = setInterval(function () {
-                return _this2.tick();
-            }, 1000);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            clearInterval(this.interval);
-        }
-    }, {
+    _createClass(TimeDetails, [{
         key: 'formatTime',
         value: function formatTime(date, asUtc) {
             var hours = asUtc ? date.getUTCHours() : date.getHours();
@@ -389,7 +383,7 @@ var TimeDetails = (function (_React$Component2) {
     }, {
         key: 'render',
         value: function render() {
-            var date = this.state.time;
+            var date = this.props.time;
             var year = date.getFullYear();
             var month = date.getMonth();
             var day = date.getDate();
@@ -612,6 +606,12 @@ var WeatherStatus = (function (_React$Component3) {
 
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Renders the vertical pane with details from local weather status.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 var WeatherDetails = (function (_React$Component4) {
     _inherits(WeatherDetails, _React$Component4);
 
@@ -621,6 +621,13 @@ var WeatherDetails = (function (_React$Component4) {
         _get(Object.getPrototypeOf(WeatherDetails.prototype), 'constructor', this).apply(this, arguments);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    //
+    //  Renders one day's forecast amoung 7 day outlook.
+    //  Displays when, high/low, condition and condition icon.
+    //
+    ////////////////////////////////////////////////////////////////////////////////
+
     _createClass(WeatherDetails, [{
         key: 'render',
         value: function render() {
@@ -628,6 +635,7 @@ var WeatherDetails = (function (_React$Component4) {
             if (!channel.hasOwnProperty('item')) {
                 return React.createElement('div', { className: 'weather-details' });
             }
+            var pressure = channel.atmosphere.pressure * 0.0295301;
             return React.createElement(
                 'div',
                 { className: 'weather-details' },
@@ -636,12 +644,7 @@ var WeatherDetails = (function (_React$Component4) {
                     null,
                     React.createElement(
                         'span',
-                        { className: 'title' },
-                        'Location:'
-                    ),
-                    React.createElement(
-                        'span',
-                        { className: 'value' },
+                        { className: 'no-title' },
                         channel.location.city
                     )
                 ),
@@ -650,12 +653,7 @@ var WeatherDetails = (function (_React$Component4) {
                     null,
                     React.createElement(
                         'span',
-                        { className: 'title' },
-                        'Conditions:'
-                    ),
-                    React.createElement(
-                        'span',
-                        { className: 'value' },
+                        { className: 'no-title' },
                         channel.item.condition.text
                     )
                 ),
@@ -730,7 +728,7 @@ var WeatherDetails = (function (_React$Component4) {
                     React.createElement(
                         'span',
                         { className: 'value' },
-                        channel.atmosphere.pressure
+                        pressure.toFixed(2) + " inHg"
                     )
                 ),
                 React.createElement(
@@ -821,6 +819,12 @@ var ForecastBlock = (function (_React$Component5) {
         _get(Object.getPrototypeOf(ForecastBlock.prototype), 'constructor', this).apply(this, arguments);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    //
+    //  Renders the 7 day forecast in ForecastBlocks.
+    //
+    ////////////////////////////////////////////////////////////////////////////////
+
     _createClass(ForecastBlock, [{
         key: 'render',
         value: function render() {
@@ -869,6 +873,14 @@ var WeatherForecast = (function (_React$Component6) {
         _get(Object.getPrototypeOf(WeatherForecast.prototype), 'constructor', this).apply(this, arguments);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    //
+    //  Main application class
+    //  Owns the common timers and sets up the general layout of the clock.
+    //  Time and wather changes flow down to components through state changes.
+    //
+    ////////////////////////////////////////////////////////////////////////////////
+
     _createClass(WeatherForecast, [{
         key: 'render',
         value: function render() {
@@ -900,13 +912,13 @@ var WeatherClock = (function (_React$Component7) {
         _classCallCheck(this, WeatherClock);
 
         _get(Object.getPrototypeOf(WeatherClock.prototype), 'constructor', this).call(this, props);
-        this.state = { channel: {} };
+        this.state = { channel: {}, time: new Date() };
     }
 
     _createClass(WeatherClock, [{
         key: 'getForecast',
         value: function getForecast(cb) {
-            var statement = 'select * from weather.forecast where woeid=' + this.props.cities[6].key;
+            var statement = 'select * from weather.forecast where woeid=' + this.props.cities[this.props.cityIndex].key;
             var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' + statement;
 
             // Fetch the latest data.
@@ -926,26 +938,35 @@ var WeatherClock = (function (_React$Component7) {
             request.send();
         }
     }, {
-        key: 'refresh',
-        value: function refresh() {
+        key: 'refreshWeather',
+        value: function refreshWeather() {
             var that = this;
             this.getForecast(function (results) {
                 that.setState({ channel: results.channel });
             });
         }
     }, {
+        key: 'refreshTime',
+        value: function refreshTime() {
+            this.setState({ time: new Date() });
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             var that = this;
-            this.refresh();
-            this.interval = setInterval(function () {
-                return that.refresh();
+            this.refreshWeather();
+            this.weatherInterval = setInterval(function () {
+                return that.refreshWeather();
             }, 3600000);
+            this.timeInterval = setInterval(function () {
+                return that.refreshTime();
+            }, 1000);
         }
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
-            clearInterval(this.interval);
+            clearInterval(this.weatherInterval);
+            clearInterval(this.timeInterval);
         }
     }, {
         key: 'render',
@@ -956,12 +977,12 @@ var WeatherClock = (function (_React$Component7) {
                 React.createElement(
                     'div',
                     { className: 'column1' },
-                    React.createElement(TimeDetails, null)
+                    React.createElement(TimeDetails, { time: this.state.time })
                 ),
                 React.createElement(
                     'div',
                     { className: 'column2' },
-                    React.createElement(ClockFace, null),
+                    React.createElement(ClockFace, { time: this.state.time }),
                     React.createElement(WeatherStatus, { channel: this.state.channel })
                 ),
                 React.createElement(
@@ -983,6 +1004,6 @@ WeatherClock.defaultProps = {
 };
 
 $(document).ready(function () {
-    ReactDOM.render(React.createElement(WeatherClock, null), document.getElementById('mount'));
+    ReactDOM.render(React.createElement(WeatherClock, { cityIndex: '6' }), document.getElementById('mount'));
 });
 

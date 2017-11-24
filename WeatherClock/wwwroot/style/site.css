@@ -143,6 +143,11 @@
 .weather-details .value {
   color: deepskyblue; }
 
+.weather-details .no-title {
+  display: inline-block;
+  font-size: 125%;
+  color: deepskyblue; }
+
 .weather-forecast {
   display: block;
   font-size: 25%;

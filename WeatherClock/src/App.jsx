@@ -1,4 +1,26 @@
-﻿function getIconClass(weatherCode) {
+﻿////////////////////////////////////////////////////////////////////////////////
+//
+//  Weather Clock
+//
+//  A program designed to display a wall clock face on a specific piece of
+//  hardware: a Raspberry Pi coupled with a rescued 1600 X 900 laptop screen.
+//
+//  Van Kichline
+//  November 2017
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Utility routines:
+//
+//  geticonClass is used by a couple components to select the css class to be
+//      used to display a specific weather icon.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+function getIconClass(weatherCode) {
     // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes
     weatherCode = parseInt(weatherCode);
     switch (weatherCode) {
@@ -64,28 +86,21 @@
 
 
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  ClockFace class
+//  Displays the time, AM/PM, and day/date in center of app
+//  Properties: time is a JavaScript Date object.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 class ClockFace extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { time: new Date() };
-    }
-
-    tick() {
-        this.setState(prevState => ({
-            time: new Date()
-        }));
-    }
-
-    componentDidMount() {
-        this.interval = setInterval(() => this.tick(), 1000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
     }
 
     render() {
-        let time = this.state.time;
+        let time = this.props.time;
         let hours = time.getHours();
         let minutes = time.getMinutes();
         let seconds = time.getSeconds();
@@ -125,24 +140,17 @@ ClockFace.defaultProps = {
 };
 
 
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Renders the vertical pane with details about current time.
+//  Properties: time is a JavaScript Date object.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 class TimeDetails extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { time: new Date() };
-    }
-
-    tick() {
-        this.setState(prevState => ({
-            time: new Date()
-        }));
-    }
-
-    componentDidMount() {
-        this.interval = setInterval(() => this.tick(), 1000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
     }
 
     formatTime(date, asUtc) {
@@ -301,7 +309,7 @@ class TimeDetails extends React.Component {
     }
 
     render() {
-        let date = this.state.time;
+        let date = this.props.time;
         let year = date.getFullYear();
         let month = date.getMonth();
         let day = date.getDate();
@@ -331,6 +339,13 @@ class TimeDetails extends React.Component {
 }
 
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Renders the current temperature and condition icon for local weather.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
 class WeatherStatus extends React.Component {
     render() {
         let iconClass = "icon-image";
@@ -355,21 +370,30 @@ class WeatherStatus extends React.Component {
 };
 
 
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Renders the vertical pane with details from local weather status.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
 class WeatherDetails extends React.Component {
     render() {
         let channel = this.props.channel;
         if (!channel.hasOwnProperty('item')) {
             return <div className="weather-details"></div>;
         }
+        let pressure = channel.atmosphere.pressure * 0.0295301;
         return (
             <div className="weather-details">
-                <div><span className="title">Location:</span><span className="value">{channel.location.city}</span></div>
-                <div><span className="title">Conditions:</span><span className="value">{channel.item.condition.text}</span></div>
+                <div><span className="no-title">{channel.location.city}</span></div>
+                <div><span className="no-title">{channel.item.condition.text}</span></div>
                 <div><span className="title">Wind Chill:</span><span className="value">{channel.wind.chill + "°"} {channel.units.temperature}</span></div>
                 <div><span className="title">Speed:</span><span className="value">{channel.wind.speed} {channel.units.speed}</span></div>
                 <div><span className="title">Direction:</span><span className="value">{channel.wind.direction + "°"}</span></div>
                 <div><span className="title">Humidity:</span><span className="value">{channel.atmosphere.humidity + "%"}</span></div>
-                <div><span className="title">Pressure:</span><span className="value">{channel.atmosphere.pressure}</span></div>
+                <div><span className="title">Pressure:</span><span className="value">{pressure.toFixed(2) + " inHg"}</span></div>
                 <div><span className="title">Visibility:</span><span className="value">{channel.atmosphere.visibility} {channel.units.distance}</span></div>
                 <div><span className="title">Sunrise:</span><span className="value">{channel.astronomy.sunrise}</span></div>
                 <div><span className="title">Sunset:</span><span className="value">{channel.astronomy.sunset}</span></div>
@@ -379,6 +403,15 @@ class WeatherDetails extends React.Component {
         );
     }
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Renders one day's forecast amoung 7 day outlook.
+//  Displays when, high/low, condition and condition icon.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 class ForecastBlock extends React.Component {
@@ -398,6 +431,14 @@ class ForecastBlock extends React.Component {
         );
     }
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Renders the 7 day forecast in ForecastBlocks.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 
 class WeatherForecast extends React.Component {
@@ -424,14 +465,24 @@ class WeatherForecast extends React.Component {
 }
 
 
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Main application class
+//  Owns the common timers and sets up the general layout of the clock.
+//  Time and wather changes flow down to components through state changes.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
 class WeatherClock extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { channel: {} };
+        this.state = { channel: {}, time: new Date() };
     }
 
     getForecast(cb) {
-        let statement = 'select * from weather.forecast where woeid=' + this.props.cities[6].key;
+        let statement = 'select * from weather.forecast where woeid=' + this.props.cities[this.props.cityIndex].key;
         let url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' + statement;
 
         // Fetch the latest data.
@@ -451,31 +502,37 @@ class WeatherClock extends React.Component {
         request.send();
     }
 
-    refresh() {
+    refreshWeather() {
         let that = this;
         this.getForecast(function (results) {
             that.setState({ channel: results.channel });
         });
     }
 
+    refreshTime() {
+        this.setState({ time: new Date() });
+    }
+
     componentDidMount() {
         let that = this;
-        this.refresh();
-        this.interval = setInterval(() => that.refresh(), 3600000);
+        this.refreshWeather();
+        this.weatherInterval = setInterval(() => that.refreshWeather(), 3600000);
+        this.timeInterval = setInterval(() => that.refreshTime(), 1000);
     }
 
     componentWillUnmount() {
-        clearInterval(this.interval);
+        clearInterval(this.weatherInterval);
+        clearInterval(this.timeInterval);
     }
 
     render() {
         return (
             <div className="app-container">
                 <div className="column1">
-                    <TimeDetails />
+                    <TimeDetails time={this.state.time} />
                 </div>
                 <div className="column2" >
-                    <ClockFace />
+                    <ClockFace time={this.state.time} />
                     <WeatherStatus channel={this.state.channel} />
                 </div>
                 <div className="column3">
@@ -500,5 +557,5 @@ WeatherClock.defaultProps = {
 
 
 $(document).ready(function () {
-    ReactDOM.render(<WeatherClock />, document.getElementById('mount'));
+    ReactDOM.render(<WeatherClock cityIndex="6" />, document.getElementById('mount'));
 });
