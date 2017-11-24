@@ -1,21 +1,21 @@
-﻿.weather-forecast-container {
+﻿.weather-status-container {
     margin-top: .25em;
     display: block;
     font-family: sans-serif;
 }
 
-/*.weather-forecast-container div {
+/*.weather-status-container div {
     float: right;
 }*/
 
-.weather-forecast {
+.weather-status {
     margin: 0 auto;
     display: block;
     width: 6em;
     align-content: center;
 }
 
-.weather-forecast .temperature {
+.weather-status .temperature {
     display: inline-block;
     text-align: center;
     width: 2em;
@@ -23,13 +23,13 @@
     font-size: 175%;
 }
 
-.weather-forecast .icon {
+.weather-status .icon {
     display: inline-block;
     width: 2em;
     float: right;
 }
 
-.weather-forecast .icon-image {
+.weather-status .icon-image {
     display: block;
     margin: auto;
     background-position: center;

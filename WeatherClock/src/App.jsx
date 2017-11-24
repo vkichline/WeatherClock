@@ -259,7 +259,7 @@ class TimeDetails extends React.Component {
 }
 
 
-class WeatherForecast extends React.Component {
+class WeatherStatus extends React.Component {
     getIconClass(weatherCode) {
         // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes
         weatherCode = parseInt(weatherCode);
@@ -331,8 +331,8 @@ class WeatherForecast extends React.Component {
             iconClass = " icon-image " + this.getIconClass(channel.item.condition.code);
         }
         return (
-            <div className="weather-forecast-container">
-                <div className="weather-forecast">
+            <div className="weather-status-container">
+                <div className="weather-status">
                     <div className="temperature">
                         {channel.hasOwnProperty('item') ?
                             channel.item.condition.temp + "°" : '?'}
@@ -425,11 +425,12 @@ class WeatherClock extends React.Component {
                 </div>
                 <div className="column2" >
                     <ClockFace />
-                    <WeatherForecast channel={this.state.channel} />
+                    <WeatherStatus channel={this.state.channel} />
                 </div>
                 <div className="column3">
                     <WeatherDetails channel={this.state.channel} />
                 </div>
+
             </div>
         );
     }

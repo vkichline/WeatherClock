@@ -452,16 +452,16 @@ var TimeDetails = (function (_React$Component2) {
     return TimeDetails;
 })(React.Component);
 
-var WeatherForecast = (function (_React$Component3) {
-    _inherits(WeatherForecast, _React$Component3);
+var WeatherStatus = (function (_React$Component3) {
+    _inherits(WeatherStatus, _React$Component3);
 
-    function WeatherForecast() {
-        _classCallCheck(this, WeatherForecast);
+    function WeatherStatus() {
+        _classCallCheck(this, WeatherStatus);
 
-        _get(Object.getPrototypeOf(WeatherForecast.prototype), "constructor", this).apply(this, arguments);
+        _get(Object.getPrototypeOf(WeatherStatus.prototype), "constructor", this).apply(this, arguments);
     }
 
-    _createClass(WeatherForecast, [{
+    _createClass(WeatherStatus, [{
         key: "getIconClass",
         value: function getIconClass(weatherCode) {
             // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes
@@ -544,10 +544,10 @@ var WeatherForecast = (function (_React$Component3) {
             }
             return React.createElement(
                 "div",
-                { className: "weather-forecast-container" },
+                { className: "weather-status-container" },
                 React.createElement(
                     "div",
-                    { className: "weather-forecast" },
+                    { className: "weather-status" },
                     React.createElement(
                         "div",
                         { className: "temperature" },
@@ -563,7 +563,7 @@ var WeatherForecast = (function (_React$Component3) {
         }
     }]);
 
-    return WeatherForecast;
+    return WeatherStatus;
 })(React.Component);
 
 ;
@@ -837,7 +837,7 @@ var WeatherClock = (function (_React$Component5) {
                     "div",
                     { className: "column2" },
                     React.createElement(ClockFace, null),
-                    React.createElement(WeatherForecast, { channel: this.state.channel })
+                    React.createElement(WeatherStatus, { channel: this.state.channel })
                 ),
                 React.createElement(
                     "div",
