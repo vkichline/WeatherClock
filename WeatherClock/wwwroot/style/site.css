@@ -2,7 +2,8 @@
   margin: 0;
   padding: 0;
   color: white;
-  font-size: 72pt; }
+  font-size: 72pt;
+  overflow: hidden; }
 
 .app-container {
   background-color: black;

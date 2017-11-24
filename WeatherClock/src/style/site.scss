@@ -5,6 +5,7 @@ body {
     padding: 0;
     color: $site-foreground;
     font-size: $clock-fontsize;
+    overflow: hidden;
 }
 
 div, td {
