@@ -318,8 +318,11 @@ var TimeDetails = (function (_React$Component2) {
         key: "render",
         value: function render() {
             var date = this.state.time;
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            var day = date.getDate();
             var hour = 0.0 + date.getHours() + date.getMinutes() / 60.0 + date.getSeconds() / 3600.0;
-            var jday = this.julianDay(date.getFullYear(), date.getMonth(), date.getDate(), hour);
+            var jday = this.julianDay(year, month, day, hour);
             var st = this.calcLST(date);
             var doy = this.getDayOfYear(date);
             var soy = this.getSecondOfYear(date);
@@ -423,6 +426,48 @@ var TimeDetails = (function (_React$Component2) {
                         "span",
                         { className: "value" },
                         doy
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Year:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        year
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Month:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        month
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "span",
+                        { className: "title" },
+                        "Day:"
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "value" },
+                        day
                     )
                 ),
                 React.createElement(
@@ -768,8 +813,87 @@ var WeatherDetails = (function (_React$Component4) {
     return WeatherDetails;
 })(React.Component);
 
-var WeatherClock = (function (_React$Component5) {
-    _inherits(WeatherClock, _React$Component5);
+var ForecastBlock = (function (_React$Component5) {
+    _inherits(ForecastBlock, _React$Component5);
+
+    function ForecastBlock() {
+        _classCallCheck(this, ForecastBlock);
+
+        _get(Object.getPrototypeOf(ForecastBlock.prototype), "constructor", this).apply(this, arguments);
+    }
+
+    _createClass(ForecastBlock, [{
+        key: "render",
+        value: function render() {
+            var fc = this.props.forecast;
+            var when = fc.day + ", " + fc.date;
+            return React.createElement(
+                "div",
+                { className: "forecast-block" },
+                React.createElement(
+                    "div",
+                    { className: "content" },
+                    React.createElement(
+                        "div",
+                        { className: "center medium" },
+                        when
+                    ),
+                    React.createElement(
+                        "div",
+                        { className: "center large" },
+                        fc.low,
+                        "° / ",
+                        fc.high,
+                        "°"
+                    ),
+                    React.createElement(
+                        "div",
+                        { className: "center small" },
+                        fc.text
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ForecastBlock;
+})(React.Component);
+
+var WeatherForecast = (function (_React$Component6) {
+    _inherits(WeatherForecast, _React$Component6);
+
+    function WeatherForecast() {
+        _classCallCheck(this, WeatherForecast);
+
+        _get(Object.getPrototypeOf(WeatherForecast.prototype), "constructor", this).apply(this, arguments);
+    }
+
+    _createClass(WeatherForecast, [{
+        key: "render",
+        value: function render() {
+            if (this.props.channel.hasOwnProperty("item")) {
+                return React.createElement(
+                    "div",
+                    { className: "weather-forecast" },
+                    React.createElement(ForecastBlock, { forecast: this.props.channel.item.forecast[0] }),
+                    React.createElement(ForecastBlock, { forecast: this.props.channel.item.forecast[1] }),
+                    React.createElement(ForecastBlock, { forecast: this.props.channel.item.forecast[2] }),
+                    React.createElement(ForecastBlock, { forecast: this.props.channel.item.forecast[3] }),
+                    React.createElement(ForecastBlock, { forecast: this.props.channel.item.forecast[4] }),
+                    React.createElement(ForecastBlock, { forecast: this.props.channel.item.forecast[5] }),
+                    React.createElement(ForecastBlock, { forecast: this.props.channel.item.forecast[7] })
+                );
+            } else {
+                return React.createElement("div", { className: "weather-forecast" });
+            }
+        }
+    }]);
+
+    return WeatherForecast;
+})(React.Component);
+
+var WeatherClock = (function (_React$Component7) {
+    _inherits(WeatherClock, _React$Component7);
 
     function WeatherClock(props) {
         _classCallCheck(this, WeatherClock);
@@ -843,7 +967,8 @@ var WeatherClock = (function (_React$Component5) {
                     "div",
                     { className: "column3" },
                     React.createElement(WeatherDetails, { channel: this.state.channel })
-                )
+                ),
+                React.createElement(WeatherForecast, { channel: this.state.channel })
             );
         }
     }]);

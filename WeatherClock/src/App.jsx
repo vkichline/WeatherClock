@@ -236,8 +236,11 @@ class TimeDetails extends React.Component {
 
     render() {
         let date = this.state.time;
+        let year = date.getFullYear();
+        let month = date.getMonth();
+        let day = date.getDate();
         let hour = 0.0 + date.getHours() + (date.getMinutes() / 60.0) + (date.getSeconds() / 3600.0);
-        let jday = this.julianDay(date.getFullYear(), date.getMonth(), date.getDate(), hour);
+        let jday = this.julianDay(year, month, day, hour);
         let st = this.calcLST(date);
         let doy = this.getDayOfYear(date);
         let soy = this.getSecondOfYear(date);
@@ -251,6 +254,9 @@ class TimeDetails extends React.Component {
                 <div><span className="title">Second:</span><span className="value">{soy.toLocaleString('en')}</span></div>
                 <div><span className="title">% of Year:</span><span className="value">{(poy * 100.0).toFixed(4) + "%"}</span></div>
                 <div><span className="title">Day of Year:</span><span className="value">{doy}</span></div>
+                <div><span className="title">Year:</span><span className="value">{year}</span></div>
+                <div><span className="title">Month:</span><span className="value">{month}</span></div>
+                <div><span className="title">Day:</span><span className="value">{day}</span></div>
                 <div><span className="title">Time Zone:</span><span className="value">{date.getTimezoneOffset() / 60}</span></div>
                 <div><span className="title"></span><span className="value"></span></div>
             </div>
@@ -373,6 +379,47 @@ class WeatherDetails extends React.Component {
 }
 
 
+class ForecastBlock extends React.Component {
+    render() {
+        let fc = this.props.forecast;
+        let when = fc.day + ", " + fc.date;
+        return (
+            <div className="forecast-block">
+                <div className="content">
+                    <div className="center medium">{when}</div>
+                    <div className="center large">{fc.low}° / {fc.high}°</div>
+                    <div className="center small">{fc.text}</div>
+                </div>
+            </div>
+        );
+    }
+}
+
+
+class WeatherForecast extends React.Component {
+    render() {
+        if (this.props.channel.hasOwnProperty("item")) {
+            return (
+                <div className="weather-forecast">
+                    <ForecastBlock forecast={this.props.channel.item.forecast[0]} />
+                    <ForecastBlock forecast={this.props.channel.item.forecast[1]} />
+                    <ForecastBlock forecast={this.props.channel.item.forecast[2]} />
+                    <ForecastBlock forecast={this.props.channel.item.forecast[3]} />
+                    <ForecastBlock forecast={this.props.channel.item.forecast[4]} />
+                    <ForecastBlock forecast={this.props.channel.item.forecast[5]} />
+                    <ForecastBlock forecast={this.props.channel.item.forecast[7]} />
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className="weather-forecast"></div>
+            );
+        }
+    }
+}
+
+
 class WeatherClock extends React.Component {
     constructor(props) {
         super(props);
@@ -430,7 +477,7 @@ class WeatherClock extends React.Component {
                 <div className="column3">
                     <WeatherDetails channel={this.state.channel} />
                 </div>
-
+                <WeatherForecast channel={this.state.channel} />
             </div>
         );
     }

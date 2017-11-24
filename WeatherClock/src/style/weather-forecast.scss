@@ -1,0 +1,41 @@
+﻿.weather-forecast {
+    display: block;
+    font-size: 25%;
+    clear: both;
+    width: 100%;
+    height: 15em;
+    padding-top: 5em;
+    padding-left: .5em;
+}
+
+.weather-forecast .forecast-block {
+    display: inline-block;
+    height: 6em;
+    width: 6em;
+    border: 2px solid $site-foreground;
+    background-color: $forecast-background;
+    border-radius: 1em;
+    margin: .5em;
+    padding: 1em;
+}
+
+.weather-forecast .forecast-block .content {
+    padding: 0;
+    margin: 0;
+}
+
+.weather-forecast .forecast-block .content .center {
+    text-align: center;
+}
+
+.weather-forecast .forecast-block .content .small {
+    font-size: 55%;
+}
+
+.weather-forecast .forecast-block .content .medium {
+    font-size: 75%;
+}
+
+.weather-forecast .forecast-block .content .large {
+    font-size: 100%;
+}
