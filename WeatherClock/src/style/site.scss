@@ -6,6 +6,7 @@ body {
     color: $site-foreground;
     font-size: $clock-fontsize;
     overflow: hidden;
+    cursor: none;
 }
 
 div, td {
