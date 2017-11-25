@@ -25,5 +25,5 @@
 .weather-details .no-title {
     display: inline-block;
     font-size: 125%;
-    color: $details-title-color;
+    color: $site-foreground; //$details-title-color;
 }

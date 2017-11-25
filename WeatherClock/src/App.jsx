@@ -303,6 +303,12 @@ class TimeDetails extends React.Component {
         return Math.floor(diff / 1000);
     }
 
+    getSecondOfDay(date) {
+        let start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        let diff = (date - start) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60);
+        return Math.floor(diff / 1000);
+    }
+
     isLeapYear(date) {
         let year = date.getFullYear();
         return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
@@ -318,6 +324,7 @@ class TimeDetails extends React.Component {
         let st = this.calcLST(date);
         let doy = this.getDayOfYear(date);
         let soy = this.getSecondOfYear(date);
+        let sod = this.getSecondOfDay(date);
         let poy = soy / ((this.isLeapYear(date) ? 355 : 365) * 86400);
         return (
             <div className="time-details">
@@ -325,7 +332,8 @@ class TimeDetails extends React.Component {
                 <div><span className="title">Sidereal Time:</span><span className="value">{this.formatSiderialTime(st)}</span></div>
                 <div><span className="title">Julian Day:</span><span className="value">{jday.toFixed(4).toLocaleString('en')}</span></div>
                 <div><span className="title">GMST:</span><span className="value">{this.getGMST(date).toFixed(4) + "°"}</span></div>
-                <div><span className="title">Second:</span><span className="value">{soy.toLocaleString('en')}</span></div>
+                <div><span className="title">Sec of Year:</span><span className="value">{soy.toLocaleString('en')}</span></div>
+                <div><span className="title">Sec of Day:</span><span className="value">{sod.toLocaleString('en')}</span></div>
                 <div><span className="title">% of Year:</span><span className="value">{(poy * 100.0).toFixed(4) + "%"}</span></div>
                 <div><span className="title">Day of Year:</span><span className="value">{doy}</span></div>
                 <div><span className="title">Year:</span><span className="value">{year}</span></div>

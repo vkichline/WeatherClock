@@ -375,6 +375,13 @@ var TimeDetails = (function (_React$Component2) {
             return Math.floor(diff / 1000);
         }
     }, {
+        key: 'getSecondOfDay',
+        value: function getSecondOfDay(date) {
+            var start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            var diff = date - start + (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60;
+            return Math.floor(diff / 1000);
+        }
+    }, {
         key: 'isLeapYear',
         value: function isLeapYear(date) {
             var year = date.getFullYear();
@@ -392,6 +399,7 @@ var TimeDetails = (function (_React$Component2) {
             var st = this.calcLST(date);
             var doy = this.getDayOfYear(date);
             var soy = this.getSecondOfYear(date);
+            var sod = this.getSecondOfDay(date);
             var poy = soy / ((this.isLeapYear(date) ? 355 : 365) * 86400);
             return React.createElement(
                 'div',
@@ -458,12 +466,26 @@ var TimeDetails = (function (_React$Component2) {
                     React.createElement(
                         'span',
                         { className: 'title' },
-                        'Second:'
+                        'Sec of Year:'
                     ),
                     React.createElement(
                         'span',
                         { className: 'value' },
                         soy.toLocaleString('en')
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'span',
+                        { className: 'title' },
+                        'Sec of Day:'
+                    ),
+                    React.createElement(
+                        'span',
+                        { className: 'value' },
+                        sod.toLocaleString('en')
                     )
                 ),
                 React.createElement(
