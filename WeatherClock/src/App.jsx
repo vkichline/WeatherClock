@@ -317,7 +317,7 @@ class TimeDetails extends React.Component {
     render() {
         let date = this.props.time;
         let year = date.getFullYear();
-        let month = date.getMonth();
+        let month = date.getMonth() + 1;
         let day = date.getDate();
         let hour = 0.0 + date.getHours() + (date.getMinutes() / 60.0) + (date.getSeconds() / 3600.0);
         let jday = this.julianDay(year, month, day, hour);

@@ -392,7 +392,7 @@ var TimeDetails = (function (_React$Component2) {
         value: function render() {
             var date = this.props.time;
             var year = date.getFullYear();
-            var month = date.getMonth();
+            var month = date.getMonth() + 1;
             var day = date.getDate();
             var hour = 0.0 + date.getHours() + date.getMinutes() / 60.0 + date.getSeconds() / 3600.0;
             var jday = this.julianDay(year, month, day, hour);
