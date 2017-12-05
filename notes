@@ -51,3 +51,16 @@ X-GNOME-Autostart-enabled=true
 
 =====
 
+A script can be added to the www folder to simplify updates:
+
+#!/bin/bash
+
+cd ~/Work/WeatherClock
+git pull
+cd ~/www
+cp ~/Work/WeatherClock/WeatherClock/wwwroot/index.html .
+cp ~/Work/WeatherClock/WeatherClock/wwwroot/style/site.css ./style/site.min.css
+cp ~/Work/WeatherClock/WeatherClock/wwwroot/script/App.min.js ./script/App.js
+
+=====
+
