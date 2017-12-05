@@ -392,7 +392,7 @@ class WeatherDetails extends React.Component {
                    'South', 'SSW', 'SW', 'WSW', 'West', 'WNW', 'NW', 'NNW'];
         let count = dir.length;
         angle = (angle - (360 / count / 2) + 360) % 360; // set back half a division
-        let index = Math.ceil(angle / (360 / count));
+        let index = Math.ceil(angle / (360 / count)) % 16;
         return dir[index];
     }
 

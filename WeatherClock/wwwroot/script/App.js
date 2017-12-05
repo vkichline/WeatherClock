@@ -656,7 +656,7 @@ var WeatherDetails = (function (_React$Component4) {
             var dir = ['North', 'NNE', 'NE', 'ENE', 'East', 'ESE', 'SE', 'SSE', 'South', 'SSW', 'SW', 'WSW', 'West', 'WNW', 'NW', 'NNW'];
             var count = dir.length;
             angle = (angle - 360 / count / 2 + 360) % 360; // set back half a division
-            var index = Math.ceil(angle / (360 / count));
+            var index = Math.ceil(angle / (360 / count)) % 16;
             return dir[index];
         }
     }, {
