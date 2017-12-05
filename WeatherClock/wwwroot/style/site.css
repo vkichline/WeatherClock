@@ -63,7 +63,7 @@
   vertical-align: top; }
 
 .clock-face .date {
-  font-size: 25%;
+  font-size: 55%;
   text-align: center; }
 
 .weather-status-container {
@@ -155,7 +155,7 @@
   font-size: 25%;
   clear: both;
   width: 100%;
-  padding-top: 3em;
+  padding-top: 2em;
   padding-left: .5em; }
 
 .weather-forecast .forecast-block {
