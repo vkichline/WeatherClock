@@ -387,10 +387,19 @@ class WeatherStatus extends React.Component {
 
 
 class WeatherDetails extends React.Component {
+    angleToDirection(angle) {
+        let dir = ['North', 'NNE', 'NE', 'ENE', 'East', 'ESE', 'SE', 'SSE',
+                   'South', 'SSW', 'SW', 'WSW', 'West', 'WNW', 'NW', 'NNW'];
+        let count = dir.length;
+        angle = (angle - (360 / count / 2) + 360) % 360; // set back half a division
+        let index = Math.ceil(angle / (360 / count));
+        return dir[index];
+    }
+
     render() {
         let channel = this.props.channel;
         if (!channel.hasOwnProperty('item')) {
-            return <div className="weather-details"></div>;
+            return <div className="weather-details">?</div>;
         }
         let pressure = channel.atmosphere.pressure * 0.0295301;
         return (
@@ -399,7 +408,7 @@ class WeatherDetails extends React.Component {
                 <div><span className="no-title">{channel.item.condition.text}</span></div>
                 <div><span className="title">Wind Chill:</span><span className="value">{channel.wind.chill + "°"} {channel.units.temperature}</span></div>
                 <div><span className="title">Speed:</span><span className="value">{channel.wind.speed} {channel.units.speed}</span></div>
-                <div><span className="title">Direction:</span><span className="value">{channel.wind.direction + "°"}</span></div>
+                <div><span className="title">Direction:</span><span className="value">{this.angleToDirection(channel.wind.direction)}</span></div>
                 <div><span className="title">Humidity:</span><span className="value">{channel.atmosphere.humidity + "%"}</span></div>
                 <div><span className="title">Pressure:</span><span className="value">{pressure.toFixed(2) + " inHg"}</span></div>
                 <div><span className="title">Visibility:</span><span className="value">{channel.atmosphere.visibility} {channel.units.distance}</span></div>

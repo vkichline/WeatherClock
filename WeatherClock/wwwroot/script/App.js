@@ -651,11 +651,24 @@ var WeatherDetails = (function (_React$Component4) {
     ////////////////////////////////////////////////////////////////////////////////
 
     _createClass(WeatherDetails, [{
+        key: 'angleToDirection',
+        value: function angleToDirection(angle) {
+            var dir = ['North', 'NNE', 'NE', 'ENE', 'East', 'ESE', 'SE', 'SSE', 'South', 'SSW', 'SW', 'WSW', 'West', 'WNW', 'NW', 'NNW'];
+            var count = dir.length;
+            angle = (angle - 360 / count / 2 + 360) % 360; // set back half a division
+            var index = Math.ceil(angle / (360 / count));
+            return dir[index];
+        }
+    }, {
         key: 'render',
         value: function render() {
             var channel = this.props.channel;
             if (!channel.hasOwnProperty('item')) {
-                return React.createElement('div', { className: 'weather-details' });
+                return React.createElement(
+                    'div',
+                    { className: 'weather-details' },
+                    '?'
+                );
             }
             var pressure = channel.atmosphere.pressure * 0.0295301;
             return React.createElement(
@@ -722,7 +735,7 @@ var WeatherDetails = (function (_React$Component4) {
                     React.createElement(
                         'span',
                         { className: 'value' },
-                        channel.wind.direction + "°"
+                        this.angleToDirection(channel.wind.direction)
                     )
                 ),
                 React.createElement(
