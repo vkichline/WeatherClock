@@ -370,7 +370,7 @@ var TimeDetails = (function (_React$Component2) {
     }, {
         key: 'getSecondOfYear',
         value: function getSecondOfYear(date) {
-            var start = new Date(date.getFullYear(), 0, 0);
+            var start = new Date(date.getFullYear(), 0, 1, 0, 0, 0);
             var diff = date - start + (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60;
             return Math.floor(diff / 1000);
         }
@@ -400,7 +400,10 @@ var TimeDetails = (function (_React$Component2) {
             var doy = this.getDayOfYear(date);
             var soy = this.getSecondOfYear(date);
             var sod = this.getSecondOfDay(date);
-            var poy = soy / ((this.isLeapYear(date) ? 355 : 365) * 86400);
+            var y2 = new Date(date.getFullYear() + 1, 0, 1, 0, 0, 0);
+            var y1 = new Date(date.getFullYear(), 0, 1, 0, 0, 0);
+            var thisYearsSeconds = (y2 - y1) / 1000;
+            var poy = soy / thisYearsSeconds;
             return React.createElement(
                 'div',
                 { className: 'time-details' },

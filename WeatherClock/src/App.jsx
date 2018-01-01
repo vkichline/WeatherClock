@@ -298,7 +298,7 @@ class TimeDetails extends React.Component {
     }
 
     getSecondOfYear(date) {
-        let start = new Date(date.getFullYear(), 0, 0);
+        let start = new Date(date.getFullYear(), 0, 1, 0, 0, 0);
         let diff = (date - start) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60);
         return Math.floor(diff / 1000);
     }
@@ -325,7 +325,10 @@ class TimeDetails extends React.Component {
         let doy = this.getDayOfYear(date);
         let soy = this.getSecondOfYear(date);
         let sod = this.getSecondOfDay(date);
-        let poy = soy / ((this.isLeapYear(date) ? 355 : 365) * 86400);
+        let y2 = new Date(date.getFullYear() + 1, 0, 1, 0, 0, 0);
+        let y1 = new Date(date.getFullYear(), 0, 1, 0, 0, 0);
+        let thisYearsSeconds = (y2 - y1) / 1000;
+        let poy = soy / thisYearsSeconds;
         return (
             <div className="time-details">
                 <div><span className="title">UTC:</span><span className="value">{this.formatTime(date, true)}</span></div>
